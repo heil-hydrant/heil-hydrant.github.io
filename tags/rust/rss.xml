@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>darkseid&#x27;s site - rust</title>
+      <link>https://heil-hydrant.github.io</link>
+      <description></description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://heil-hydrant.github.io/tags/rust/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 20 Mar 2025 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>zxc</title>
+          <pubDate>Thu, 20 Mar 2025 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://heil-hydrant.github.io/zxc/</link>
+          <guid>https://heil-hydrant.github.io/zxc/</guid>
+          <description xml:base="https://heil-hydrant.github.io/zxc/">&lt;p&gt;Terminal based intercepting proxy written in rust with tmux and vim as user
+interface.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;features&quot;&gt;Features&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;tmux and vim as user interface.&lt;&#x2F;li&gt;
+&lt;li&gt;Disk based storage.&lt;&#x2F;li&gt;
+&lt;li&gt;Custom http&#x2F;1.1 parser to send malformed requests.&lt;&#x2F;li&gt;
+&lt;li&gt;http&#x2F;1.1 and websocket support.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;repo-links&quot;&gt;Repo Links&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;heil-hydrant&#x2F;zxc&quot;&gt;proxy binary&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;heil-hydrant&#x2F;zxc.vim&quot;&gt;vim plugin&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;screenshots&quot;&gt;Screenshots&lt;&#x2F;h1&gt;
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;interceptor.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Interceptor&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;interceptor_showq.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Interceptor Showq&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History with 100k+ entries&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_edit_host_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History edit host scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_edit_scode_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History edit status code scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_edit_uri_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History edit uri scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_show_host_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History show host scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_show_scode_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History show status code scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_show_uri_scope.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History show uri scope&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_show_filters.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History show filters&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;history_apply_filters.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;History apply filters&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;repeater.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Repeater&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;repeater_websocket.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Repeater websocket&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;addon_ffuf.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Addons - ffuf&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;addon_sqlmap.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Addons - sqlmap&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;edit_bufvar.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Edit buffer variables&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;edit_local_config.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Edit Local Config&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+
+  &lt;figure class=&quot;center&quot; &gt;
+    &lt;img src=&quot;&#x2F;img&#x2F;zxc&#x2F;log.png&quot; style=&quot;width: 100%;&quot; decoding=&quot;async&quot; loading=&quot;lazy&quot;&#x2F;&gt;
+    
+      &lt;figcaption class=&quot;center&quot; style=&quot;font-style: bold;&quot;&gt;&lt;p&gt;&lt;strong&gt;Log&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;figcaption&gt;
+    
+  &lt;&#x2F;figure&gt;
+
+&lt;h1 id=&quot;social&quot;&gt;Social&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;b&gt;&lt;i&gt;
+&#x2F;
+&lt;a href=&quot;https:&#x2F;&#x2F;bsky.app&#x2F;profile&#x2F;zxc-proxy.bsky.social&quot;&gt;bluesky&lt;&#x2F;a&gt;
+&#x2F;
+&lt;a href=&quot;https:&#x2F;&#x2F;www.reddit.com&#x2F;r&#x2F;zxc_proxy&#x2F;&quot;&gt;reddit&lt;&#x2F;a&gt;
+&#x2F;
+&lt;a href=&quot;https:&#x2F;&#x2F;x.com&#x2F;zxc_proxy&quot;&gt;x&lt;&#x2F;a&gt;
+&#x2F;&lt;&#x2F;b&gt;&lt;&#x2F;i&gt;&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>
