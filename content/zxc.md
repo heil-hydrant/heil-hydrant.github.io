@@ -20,9 +20,9 @@ interface.
 * http/1.1 and websocket support.
 
 # Repo Links
-[proxy binary](https://github.com/hail-hydrant/zxc)
+[proxy binary](https://github.com/heil-hydrant/zxc)
 
-[vim plugin](https://github.com/hail-hydrant/zxc.vim)
+[vim plugin](https://github.com/heil-hydrant/zxc.vim)
 
 # Screenshots
 {{ figure(src="/img/zxc/interceptor.png",
