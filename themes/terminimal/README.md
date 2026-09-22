@@ -357,6 +357,12 @@ For example, if you want to add extra `<meta>` tags to the
 base template, `index.html`, create file like this in `templates/index.html`:
 
 ```html
+{% extends "terminimal/templates/index.html" %}
+
+{% block extra_head %}
+    <meta name="description" content="My awesome website"/>
+    <meta name="keywords" content="Hacking,Programming,Ranting"/>
+{% endblock %}
 ```
 
 ## How to contribute

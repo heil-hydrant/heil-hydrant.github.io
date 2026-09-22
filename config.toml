@@ -20,8 +20,10 @@ taxonomies = [
 ]
 
 [markdown]
-highlight_code = true
-highlight_theme = "boron"
+
+[markdown.highlighting]
+theme = "github-dark"   # or use light_theme / dark_theme instead for a dual theme
+style = "inline"
 
 [extra]
 # One of: blue, green, orange, pink, red.
