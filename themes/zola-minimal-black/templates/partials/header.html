@@ -1,0 +1,27 @@
+{% set brand_name = config.title | default(value="Minimal Black") %}
+{% if config.extra.brand %}
+  {% set brand_name = config.extra.brand %}
+{% endif %}
+<header class="site-header">
+  <div class="site-header__inner page-int">
+    <a href="{{ config.base_url | default(value='/') }}" class="site-logo">
+      {% if config.extra.logo %}
+        <span class="site-logo__icon">
+          <img class="site-logo__img" src="{{ config.extra.logo | safe }}" alt="Logo" />
+        </span>
+      {% endif %}
+      <span class="site-logo__text">{{ brand_name }}</span>
+    </a>
+
+    {% include "partials/nav.html" %}
+
+    <div class="site-header__actions">
+      <button type="button" class="header-icon-btn" data-search-open aria-label="Search (Ctrl+K)" title="Search (Ctrl+K)">
+        <i class="fas fa-search"></i>
+      </button>
+      <button type="button" class="header-icon-btn" data-theme-toggle aria-label="Toggle color theme" title="Toggle color theme">
+        <i class="fas fa-adjust"></i>
+      </button>
+    </div>
+  </div>
+</header>

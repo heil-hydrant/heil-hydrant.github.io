@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="layout-page section-stack">
+  <div class="page-int">
+    <div class="article-layout">
+      <article class="article-main">
+        <header style="margin-bottom: 1.5rem;">
+          <h1 class="heading-page">{{ page.title }}</h1>
+          {% if page.date %}
+            <div class="text-muted" style="font-size: 0.78rem; margin-top: 0.4rem;">
+              <span>{{ page.date | date(format="%d %b %Y") }}</span>
+              {% if page.reading_time %} • <span>{{ page.reading_time }} min read</span>{% endif %}
+            </div>
+          {% endif %}
+          {% if page.description %}
+            <p class="text-muted" style="font-size: 0.925rem; margin-top: 0.5rem;">{{ page.description }}</p>
+          {% endif %}
+          {% if page.taxonomies and page.taxonomies.tags %}
+            <div class="u-flex u-gap-sm" style="flex-wrap: wrap; margin-top: 0.75rem;">
+              {% for tag in page.taxonomies.tags %}
+                <span class="card-badge-soft">#{{ tag }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </header>
+
+        <div class="card card-pad">
+          <div class="markdown-body">
+            {{ page.content | safe }}
+          </div>
+        </div>
+      </article>
+
+      {% include "partials/toc.html" %}
+    </div>
+  </div>
+</section>
+{% if page.extra and page.extra.mermaid %}
+  {% include "partials/mermaid.html" %}
+{% endif %}
+{% endblock main %}

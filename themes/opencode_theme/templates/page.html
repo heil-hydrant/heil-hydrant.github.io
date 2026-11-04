@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} &middot; {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+<article class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+    {# ── Breadcrumb / Back ── #}
+    <div class="mb-8">
+        <a href="{{ config.base_url }}" class="text-xs text-muted font-mono hover:text-accent">&larr; Back to Home</a>
+    </div>
+
+    {# ── Post Header ── #}
+    <header class="mb-8 pb-8 border-b border-line">
+        <h1 class="font-display text-3xl lg:text-5xl font-bold tracking-tight text-fg mb-4">
+            {{ page.title }}
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono text-muted mb-4">
+            {% if page.date %}
+            <span>Published {{ page.date | date(format="%B %d, %Y") }}</span>
+            {% endif %}
+            {% if page.reading_time %}
+            <span>&middot;</span>
+            <span>{{ page.reading_time }} min read</span>
+            {% endif %}
+        </div>
+
+        {% if page.description %}
+        <p class="text-base text-fg-2 leading-relaxed">
+            {{ page.description }}
+        </p>
+        {% endif %}
+
+        {% if page.taxonomies and page.taxonomies.tags %}
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+            {% for tag in page.taxonomies.tags %}
+            <a href="{{ get_url(path='tags/' ~ tag) }}" class="tag text-xs hover:border-accent hover:text-accent">
+                #{{ tag }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </header>
+
+    {# ── Post Body ── #}
+    <div class="prose text-fg-2 text-sm leading-relaxed space-y-6">
+        {{ page.content | safe }}
+    </div>
+
+    {# ── Next / Previous Navigation ── #}
+    {% if page.lower or page.higher %}
+    <nav class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-12 mt-12 border-t border-line text-xs font-mono">
+        <div>
+            {% if page.lower %}
+            <a href="{{ page.lower.permalink }}" class="hover:text-accent">
+                &larr; {{ page.lower.title }}
+            </a>
+            {% endif %}
+        </div>
+        <div>
+            {% if page.higher %}
+            <a href="{{ page.higher.permalink }}" class="hover:text-accent">
+                {{ page.higher.title }} &rarr;
+            </a>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+</article>
+{% endblock content %}

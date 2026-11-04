@@ -1,0 +1,30 @@
+name = "minimal-black"
+description = "A minimal, dark-mode first Zola theme with a true black background, ported from Hugo Minimal Black."
+license = "MIT"
+homepage = "https://gitlab.com/jimchr12/hugo-minimal-black"
+min_version = "0.23.0"
+demo = "https://minimal-black-demo.netlify.app"
+tags = ["blog", "portfolio", "minimal", "dark", "tailwind", "responsive"]
+features = [
+  "Dark Mode",
+  "Light Mode",
+  "Responsive Design",
+  "Search",
+  "Table of Contents",
+  "Syntax Highlighting",
+  "Analytics (Google, Plausible, Umami)",
+  "Font Awesome & Devicon Support",
+  "Multiple About Page Layouts",
+  "Project Portfolio",
+  "Blog",
+  "Tera v2 Components (figure, image, code, alert, callout, github, gallery, mermaid, youtube, vimeo, gist)"
+]
+
+[author]
+name = "Jim Christopoulos"
+homepage = "https://jimchristopoulos.com/"
+
+[original]
+author = "Jim Christopoulos"
+homepage = "https://jimchristopoulos.com/"
+repo = "https://gitlab.com/jimchr12/hugo-minimal-black"

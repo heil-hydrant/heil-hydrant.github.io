@@ -1,0 +1,299 @@
+// ============================================================================
+// Utility Classes
+// Tailwind-style utility classes for rapid prototyping
+// ============================================================================
+
+// ── Text Colors ─────────────────────────────────────────────────────────────
+.text-fg       { color: var(--fg); }
+.text-fg-2     { color: var(--fg-2); }
+.text-muted    { color: var(--muted); }
+.text-accent   { color: var(--accent); }
+.text-good     { color: var(--good); }
+.text-warning  { color: var(--warning); }
+.text-critical { color: var(--critical); }
+.text-accent-fg { color: var(--accent-fg); }
+
+// ── Background Colors ───────────────────────────────────────────────────────
+.bg-bg        { background-color: var(--bg); }
+.bg-surface-2 { background-color: var(--surface-2); }
+.bg-panel     { background-color: var(--panel); }
+.bg-window    { background-color: var(--window); }
+.bg-accent    { background-color: var(--accent); }
+.bg-good      { background-color: var(--good); }
+.bg-critical  { background-color: var(--critical); }
+.bg-warning   { background-color: var(--warning); }
+
+// ── Border Colors ───────────────────────────────────────────────────────────
+.border-line        { border-color: var(--line); }
+.border-line-strong { border-color: var(--line-strong); }
+.border-accent      { border-color: var(--accent); }
+
+// ── Border Utilities ────────────────────────────────────────────────────────
+.border   { border: 1px solid var(--line); }
+.border-t { border-top: 1px solid var(--line); }
+.border-b { border-bottom: 1px solid var(--line); }
+.border-l { border-left: 1px solid var(--line); }
+.border-r { border-right: 1px solid var(--line); }
+
+.border-strong   { border: 1px solid var(--line-strong); }
+.border-t-strong { border-top: 1px solid var(--line-strong); }
+.border-b-strong { border-bottom: 1px solid var(--line-strong); }
+
+// ── Font Families ───────────────────────────────────────────────────────────
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+.font-mono    { font-family: var(--font-mono); }
+
+// ── Display ─────────────────────────────────────────────────────────────────
+.block        { display: block; }
+.inline-block { display: inline-block; }
+.inline       { display: inline; }
+.hidden       { display: none; }
+.inline-flex  { display: inline-flex; }
+
+@media (min-width: 640px) {
+  .sm\:block  { display: block; }
+  .sm\:hidden { display: none; }
+  .sm\:flex   { display: flex; }
+}
+
+@media (min-width: 768px) {
+  .md\:block  { display: block; }
+  .md\:hidden { display: none; }
+  .md\:flex   { display: flex; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:block  { display: block; }
+  .lg\:hidden { display: none; }
+  .lg\:flex   { display: flex; }
+  .lg\:grid   { display: grid; }
+  .lg\:inline-flex { display: inline-flex; }
+}
+
+// ── Positioning ─────────────────────────────────────────────────────────────
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed    { position: fixed; }
+.sticky   { position: sticky; }
+.inset-0  { inset: 0; }
+
+.top-0    { top: 0; }
+.right-0  { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0   { left: 0; }
+
+.z-0  { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+// ── Sizing ──────────────────────────────────────────────────────────────────
+.w-full     { width: 100%; }
+.w-auto     { width: auto; }
+.w-screen   { width: 100vw; }
+.h-full     { height: 100%; }
+.h-auto     { height: auto; }
+.h-screen   { height: 100vh; }
+.min-h-screen { min-height: 100vh; }
+.min-h-0      { min-height: 0; }
+.max-w-full { max-width: 100%; }
+.max-w-none { max-width: none; }
+
+// ── Overflow ────────────────────────────────────────────────────────────────
+.overflow-hidden  { overflow: hidden; }
+.overflow-auto    { overflow: auto; }
+.overflow-x-auto  { overflow-x: auto; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-y-auto  { overflow-y: auto; }
+
+// ── Whitespace & Text ───────────────────────────────────────────────────────
+.whitespace-pre     { white-space: pre; }
+.whitespace-nowrap  { white-space: nowrap; }
+.whitespace-pre-wrap { white-space: pre-wrap; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.break-words  { overflow-wrap: break-word; }
+.text-center  { text-align: center; }
+.text-left    { text-align: left; }
+.text-right   { text-align: right; }
+
+// ── Margin ──────────────────────────────────────────────────────────────────
+.mx-auto { margin-left: auto; margin-right: auto; }
+.m-0  { margin: 0; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+.mt-10 { margin-top: 40px; }
+.mt-12 { margin-top: 48px; }
+.mt-16 { margin-top: 64px; }
+
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+.mb-10 { margin-bottom: 40px; }
+.mb-12 { margin-bottom: 48px; }
+
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+
+// ── Padding ─────────────────────────────────────────────────────────────────
+.p-0   { padding: 0; }
+.p-1   { padding: 4px; }
+.p-2   { padding: 8px; }
+.p-3   { padding: 12px; }
+.p-4   { padding: 16px; }
+.p-5   { padding: 20px; }
+.p-6   { padding: 24px; }
+.p-8   { padding: 32px; }
+.p-10  { padding: 40px; }
+
+.px-0  { padding-left: 0; padding-right: 0; }
+.px-2  { padding-left: 8px; padding-right: 8px; }
+.px-3  { padding-left: 12px; padding-right: 12px; }
+.px-4  { padding-left: 16px; padding-right: 16px; }
+.px-5  { padding-left: 20px; padding-right: 20px; }
+.px-6  { padding-left: 24px; padding-right: 24px; }
+.px-8  { padding-left: 32px; padding-right: 32px; }
+.px-10 { padding-left: 40px; padding-right: 40px; }
+
+.py-0  { padding-top: 0; padding-bottom: 0; }
+.py-2  { padding-top: 8px; padding-bottom: 8px; }
+.py-3  { padding-top: 12px; padding-bottom: 12px; }
+.py-4  { padding-top: 16px; padding-bottom: 16px; }
+.py-5  { padding-top: 20px; padding-bottom: 20px; }
+.py-6  { padding-top: 24px; padding-bottom: 24px; }
+.py-8  { padding-top: 32px; padding-bottom: 32px; }
+.py-10 { padding-top: 40px; padding-bottom: 40px; }
+.py-12 { padding-top: 48px; padding-bottom: 48px; }
+
+.pt-0  { padding-top: 0; }
+.pt-4  { padding-top: 16px; }
+.pt-6  { padding-top: 24px; }
+.pt-8  { padding-top: 32px; }
+
+.pb-0  { padding-bottom: 0; }
+.pb-4  { padding-bottom: 16px; }
+.pb-6  { padding-bottom: 24px; }
+.pb-8  { padding-bottom: 32px; }
+
+// ── Border Radius ───────────────────────────────────────────────────────────
+.rounded-none { border-radius: 0; }
+.rounded-sm   { border-radius: var(--radius-sm); }
+.rounded      { border-radius: var(--radius-md); }
+.rounded-lg   { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: var(--radius-full); }
+
+// ── Opacity ─────────────────────────────────────────────────────────────────
+.opacity-0   { opacity: 0; }
+.opacity-50  { opacity: 0.5; }
+.opacity-75  { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+// ── Pointer Events ──────────────────────────────────────────────────────────
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+// ── Cursor ──────────────────────────────────────────────────────────────────
+.cursor-pointer  { cursor: pointer; }
+.cursor-default  { cursor: default; }
+
+// ── User Select ─────────────────────────────────────────────────────────────
+.select-none { user-select: none; }
+.select-all  { user-select: all; }
+
+// ── Screen Reader Only ──────────────────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// ── Transition Utilities ────────────────────────────────────────────────────
+.transition {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-duration: var(--duration);
+  transition-timing-function: ease;
+}
+
+.transition-colors {
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--duration);
+  transition-timing-function: ease;
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-duration: var(--duration);
+  transition-timing-function: ease;
+}
+
+// ── Hover utilities ─────────────────────────────────────────────────────────
+.hover\:text-fg:hover { color: var(--fg); }
+.hover\:text-accent:hover { color: var(--accent); }
+.hover\:bg-surface-2:hover { background-color: var(--surface-2); }
+.hover\:border-fg-2:hover { border-color: var(--fg-2); }
+.hover\:opacity-100:hover { opacity: 1; }
+
+// ── Responsive padding overrides ────────────────────────────────────────────
+@media (min-width: 640px) {
+  .sm\:px-6 { padding-left: 24px; padding-right: 24px; }
+  .sm\:py-8 { padding-top: 32px; padding-bottom: 32px; }
+}
+
+@media (min-width: 768px) {
+  .md\:px-8 { padding-left: 32px; padding-right: 32px; }
+  .md\:py-10 { padding-top: 40px; padding-bottom: 40px; }
+}
+
+@media (min-width: 1024px) {
+  .lg\:px-10 { padding-left: 40px; padding-right: 40px; }
+  .lg\:py-14 { padding-top: 56px; padding-bottom: 56px; }
+  .lg\:py-24 { padding-top: 96px; padding-bottom: 96px; }
+  .lg\:gap-6 { gap: 24px; }
+  .lg\:gap-8 { gap: 32px; }
+  .lg\:gap-10 { gap: 40px; }
+  .lg\:text-center { text-align: center; }
+  .lg\:flex-row { flex-direction: row; }
+}
+
+// ── Max-width utilities ─────────────────────────────────────────────────────
+.max-w-xs  { max-width: 320px; }
+.max-w-sm  { max-width: 384px; }
+.max-w-md  { max-width: 448px; }
+.max-w-lg  { max-width: 512px; }
+.max-w-xl  { max-width: 576px; }
+.max-w-2xl { max-width: 672px; }
+.max-w-3xl { max-width: 768px; }
+.max-w-4xl { max-width: 896px; }
+.max-w-5xl { max-width: 1024px; }
+
+// ── Gap row/col ─────────────────────────────────────────────────────────────
+.gap-x-2 { column-gap: 8px; }
+.gap-x-4 { column-gap: 16px; }
+.gap-x-6 { column-gap: 24px; }
+.gap-x-8 { column-gap: 32px; }
+
+.gap-y-2 { row-gap: 8px; }
+.gap-y-4 { row-gap: 16px; }
+.gap-y-6 { row-gap: 24px; }
+.gap-y-8 { row-gap: 32px; }

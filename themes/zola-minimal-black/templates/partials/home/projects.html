@@ -1,0 +1,70 @@
+{% set project_pages = [] %}
+{% if section and section.subsections %}
+  {% if "projects/_index.md" in section.subsections %}
+    {% set projects_section = get_section(path="projects/_index.md") %}
+    {% set project_pages = projects_section.pages %}
+  {% endif %}
+{% endif %}
+{% set show_projects = true %}
+{% if config.extra.home %}
+  {% if config.extra.home.show_featured_projects == false %}
+    {% set show_projects = false %}
+  {% endif %}
+{% endif %}
+{% if show_projects and project_pages | length > 0 %}
+{% set proj_title = "Selected Work" %}
+{% set proj_subtitle = "" %}
+{% set limit = 3 %}
+{% if config.extra.home %}
+  {% if config.extra.home.projects_title %}{% set proj_title = config.extra.home.projects_title %}{% endif %}
+  {% if config.extra.home.projects_subtitle %}{% set proj_subtitle = config.extra.home.projects_subtitle %}{% endif %}
+  {% if config.extra.home.featured_projects_limit %}{% set limit = config.extra.home.featured_projects_limit %}{% endif %}
+{% endif %}
+<section>
+  <div class="u-flex-between" style="margin-bottom: 1rem;">
+    <div>
+      <h2 style="font-size: 1.35rem; font-weight: 700; margin: 0;">{{ proj_title }}</h2>
+      {% if proj_subtitle %}
+        <p class="text-muted" style="font-size: 0.85rem; margin: 0.25rem 0 0 0;">{{ proj_subtitle }}</p>
+      {% endif %}
+    </div>
+    <a class="card-cta" href="{{ get_url(path='/projects/') }}">View all →</a>
+  </div>
+
+  <div class="projects-grid cards-grid">
+    {% for page in project_pages %}
+      {% if loop.index <= limit %}
+        <article class="card-project card">
+          <div class="card-project__content card-pad">
+            <h3 class="card-project__title">
+              <a href="{{ page.permalink }}">{{ page.title }}</a>
+            </h3>
+            {% if page.description %}
+              <p class="card-project__desc">{{ page.description }}</p>
+            {% elif page.summary %}
+              <div class="card-project__desc">{{ page.summary | safe }}</div>
+            {% endif %}
+
+            {% if page.taxonomies and page.taxonomies.tags %}
+              <ul class="card-project__tags">
+                {% for tag in page.taxonomies.tags %}
+                  <li class="card-badge-soft">{{ tag }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="card-project__actions">
+              {% if page.extra and page.extra.github %}
+                <a href="{{ page.extra.github }}" class="card-cta-repo" target="_blank" rel="noopener">Source</a>
+              {% elif page.extra and page.extra.repo %}
+                <a href="{{ page.extra.repo }}" class="card-cta-repo" target="_blank" rel="noopener">Source</a>
+              {% endif %}
+              <a href="{{ page.permalink }}" class="card-cta">Details</a>
+            </div>
+          </div>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

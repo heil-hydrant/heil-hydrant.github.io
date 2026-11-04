@@ -1,0 +1,17 @@
+{% if config.extra.home and config.extra.home.tech %}
+<section>
+  {% if config.extra.home.tech_marquee_label %}
+    <h2 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); margin-bottom: 0.75rem;">
+      {{ config.extra.home.tech_marquee_label }}
+    </h2>
+  {% endif %}
+  <div class="tech-carousel">
+    {% for item in config.extra.home.tech %}
+      <span class="tech-pill">
+        {% if item.icon %}<i class="{{ item.icon }}"></i>{% endif %}
+        <span>{{ item.label }}</span>
+      </span>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="layout-page">
+  <div class="page-int section-stack">
+    <header class="page-header">
+      <h1 class="page-header__title">{{ section.title }}</h1>
+      {% if section.description %}
+        <p class="page-header__desc">{{ section.description }}</p>
+      {% elif config.extra.projects_intro %}
+        <p class="page-header__desc">{{ config.extra.projects_intro }}</p>
+      {% endif %}
+    </header>
+
+    <div class="projects-grid cards-grid">
+      {% for page in section.pages %}
+        <article class="card-project card">
+          {% if page.extra and page.extra.image %}
+            <div class="card-project__image">
+              <img src="{{ page.extra.image | safe }}" alt="{{ page.title }}" />
+            </div>
+          {% endif %}
+          <div class="card-project__content card-pad">
+            <h3 class="card-project__title">
+              <a href="{{ page.permalink }}">{{ page.title }}</a>
+            </h3>
+            {% if page.description %}
+              <p class="card-project__desc">{{ page.description }}</p>
+            {% elif page.summary %}
+              <div class="card-project__desc">{{ page.summary | safe }}</div>
+            {% endif %}
+
+            {% if page.taxonomies and page.taxonomies.tags %}
+              <ul class="card-project__tags">
+                {% for tag in page.taxonomies.tags %}
+                  <li class="card-badge-soft">{{ tag }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="card-project__actions">
+              {% if page.extra and page.extra.github %}
+                <a href="{{ page.extra.github }}" class="card-cta-repo" target="_blank" rel="noopener">Source</a>
+              {% elif page.extra and page.extra.repo %}
+                <a href="{{ page.extra.repo }}" class="card-cta-repo" target="_blank" rel="noopener">Source</a>
+              {% endif %}
+              {% if page.extra and page.extra.demo %}
+                <a href="{{ page.extra.demo }}" class="card-cta" target="_blank" rel="noopener">Live Demo</a>
+              {% endif %}
+              <a href="{{ page.permalink }}" class="card-cta">Details</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock main %}

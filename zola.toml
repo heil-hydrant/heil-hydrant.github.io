@@ -1,0 +1,40 @@
+base_url = "https://darkseid.is"
+title = "darkseid's site"
+description = "OSCP certified cybersecurity researcher & systems enthusiast. Stuck in vim, writing fast terminal tooling in Rust."
+
+compile_sass = true
+build_search_index = true
+
+theme = "dtheme"
+
+generate_feeds = true
+feed_filenames = ["rss.xml", "atom.xml"]
+
+taxonomies = [
+    {name = "categories", feed = true},
+    {name = "tags", feed = true},
+]
+
+[markdown]
+
+[markdown.highlighting]
+theme = "github-dark"
+
+[extra]
+author = "darkseid"
+logo_text = "darkseid's site"
+hero_title = "Code. Break. Automate."
+accent_color = "red"
+
+menu_items = [
+    {name = "about me", url = "/about"},
+    {name = "github", url = "https://github.com/heil-hydrant", newtab = true},
+]
+
+[link_checker]
+skip_prefixes = [
+    "https://app.hackthebox.com",
+    "https://x.com",
+    "https://www.youracclaim.com",
+    "https://www.reddit.com",
+]

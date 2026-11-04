@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="layout-page">
+  <div class="page-int section-stack section-stack--home">
+    {% set sections = ["hero", "now", "tech-marquee", "projects", "posts", "contact"] %}
+    {% if config.extra.home and config.extra.home.sections %}
+      {% set sections = config.extra.home.sections %}
+    {% endif %}
+
+    {% if section and section.content %}
+      <div class="card card-pad markdown-body">
+        {{ section.content | safe }}
+      </div>
+    {% endif %}
+
+    {% for sec in sections %}
+      {% if sec == "hero" %}
+        {% include "partials/home/hero.html" %}
+      {% elif sec == "now" %}
+        {% include "partials/home/now.html" %}
+      {% elif sec == "tech-marquee" %}
+        {% include "partials/home/tech-marquee.html" %}
+      {% elif sec == "projects" %}
+        {% include "partials/home/projects.html" %}
+      {% elif sec == "posts" %}
+        {% include "partials/home/posts.html" %}
+      {% elif sec == "contact" %}
+        {% include "partials/home/contact.html" %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock main %}

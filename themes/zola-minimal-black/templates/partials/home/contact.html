@@ -1,0 +1,11 @@
+{% if config.extra.about and config.extra.about.cta %}
+<section class="card card-pad u-flex-between" style="flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h2 style="font-size: 1.15rem; font-weight: 600; margin: 0 0 0.25rem 0;">{{ config.extra.about.cta.title }}</h2>
+    <p class="text-muted" style="font-size: 0.875rem; margin: 0;">{{ config.extra.about.cta.description }}</p>
+  </div>
+  {% if config.extra.about.cta.button_url %}
+    <a class="btn-primary-sm" href="{{ config.extra.about.cta.button_url }}">{{ config.extra.about.cta.button_text | default(value="Contact") }}</a>
+  {% endif %}
+</section>
+{% endif %}

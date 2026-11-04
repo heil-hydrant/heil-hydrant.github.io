@@ -1,0 +1,10 @@
+{% component figure(src: string, alt=None, position=None, style=None, caption=None, caption_position=None, caption_style=None) -%}
+<figure class="my-6 center text-center">
+<div class="window inline-block w-full">
+<img src="{{ src | safe }}"{% if alt %} alt="{{ alt }}"{% endif %}{% if style %} style="{{ style }}"{% endif %} class="w-full h-auto block" decoding="async" loading="lazy"/>
+{%- if caption -%}
+<figcaption class="px-4 py-2.5 text-xs text-muted border-t border-line bg-surface-2 text-center center font-mono" style="text-align: center;{% if caption_style %} {{ caption_style | safe }}{% endif %}">{{ caption | markdown(inline=true) | safe }}</figcaption>
+{%- endif -%}
+</div>
+</figure>
+{%- endcomponent figure %}

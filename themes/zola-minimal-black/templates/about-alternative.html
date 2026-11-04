@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="layout-page">
+  <div class="page-int section-stack">
+    <header class="page-header">
+      <h1 class="page-header__title">{{ section.title | default(value="About") }}</h1>
+      {% if section.description %}
+        <p class="page-header__desc">{{ section.description }}</p>
+      {% elif config.extra.about and config.extra.about.subtitle %}
+        <p class="page-header__desc">{{ config.extra.about.subtitle }}</p>
+      {% endif %}
+    </header>
+
+    <div class="about-alt-grid">
+      <div class="card card-pad markdown-body">
+        {% if config.extra.about %}
+          {% if config.extra.about.intro %}<p><strong>{{ config.extra.about.intro }}</strong></p>{% endif %}
+          {% if config.extra.about.bio %}<p>{{ config.extra.about.bio }}</p>{% endif %}
+        {% endif %}
+        {{ section.content | safe }}
+      </div>
+
+      <div class="card card-pad">
+        <h2 style="font-size: 1.15rem; font-weight: 600; margin: 0 0 1rem 0;">Experience & Background</h2>
+        {% if config.extra.about and config.extra.about.experience %}
+          <div class="timeline-list">
+            {% for exp in config.extra.about.experience %}
+              <div class="timeline-item">
+                <div class="timeline-item__period">{{ exp.period }}</div>
+                <div class="timeline-item__title">{{ exp.role }} · {{ exp.company }}</div>
+                <p class="timeline-item__desc">{{ exp.description }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock main %}

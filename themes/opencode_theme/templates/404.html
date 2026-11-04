@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}404 &middot; Command Not Found &middot; {{ config.title }}{% endblock title %}
+
+{% block content %}
+<section class="section-lg grid-bg relative overflow-hidden text-center">
+    <div class="glow-center"></div>
+    <div class="relative z-10 max-w-lg mx-auto px-6 py-16 flex flex-col items-center gap-4">
+        <span class="tag tag-accent text-xs">Error 404</span>
+        <h1 class="font-display text-5xl font-bold tracking-tight text-fg">zsh: command not found</h1>
+        <p class="text-sm text-fg-2">The route you requested does not exist or has been relocated.</p>
+        <div class="mt-4">
+            <a href="{{ config.base_url }}" class="btn btn-accent">&larr; Return to Home</a>
+        </div>
+    </div>
+</section>
+{% endblock content %}

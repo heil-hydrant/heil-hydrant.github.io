@@ -1,0 +1,383 @@
+// ============================================================================
+// Components
+// Reusable UI elements for terminal-native layout
+// ============================================================================
+
+// ── Window Chrome ───────────────────────────────────────────────────────────
+// macOS-style frosted glass window header with traffic light dots
+.window-chrome {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;                  // gap-2.5
+  padding: 10px 20px;        // px-5 py-2.5
+  background: rgba(18, 18, 18, 0.40) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+
+  &--red    { background-color: var(--critical); }
+  &--yellow { background-color: var(--warning); }
+  &--green  { background-color: var(--good); }
+}
+
+// ── Window Body ─────────────────────────────────────────────────────────────
+// Code/terminal content area below window chrome
+.window-body {
+  background-color: var(--panel);
+  padding: 18px 20px;        // px-5 py-[18px]
+  font-size: 12.5px;
+  line-height: 1.85;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: var(--font-mono);
+  color: var(--fg-2);
+}
+
+// Full window wrapper
+.window {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: transparent;
+}
+
+// ── Label / Header Row ─────────────────────────────────────────────────────
+// Uppercase section label, often with icon/link on the right
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  padding-bottom: 16px;
+}
+
+.label-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// ── Buttons ─────────────────────────────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;        // px-[18px] py-3.5
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--line-strong);
+  background-color: var(--panel);
+  color: var(--fg);
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration) ease,
+              border-color var(--duration) ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--surface-2);
+    border-color: var(--fg-2);
+  }
+}
+
+// Accent button variant
+.btn-accent {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+  border-color: var(--accent);
+
+  &:hover {
+    background-color: var(--accent-hover, #cc0000);
+    border-color: var(--accent-hover, #cc0000);
+  }
+}
+
+// Ghost button (no background)
+.btn-ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--fg-2);
+
+  &:hover {
+    color: var(--fg);
+    background-color: var(--surface-2);
+  }
+}
+
+// ── Stat Card ───────────────────────────────────────────────────────────────
+// Used in stats grids with big numbers
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;             // px-6 py-6
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: -0.03em;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+
+// ── Step Number ─────────────────────────────────────────────────────────────
+// Numbered steps, accent-colored
+.step-num {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+// ── Tag / Pill ──────────────────────────────────────────────────────────────
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+
+.tag-accent {
+  border-color: var(--accent-border, rgba(255, 0, 0, 0.3));
+  color: var(--accent);
+}
+
+// ── Install Command ─────────────────────────────────────────────────────────
+// Terminal-style install command display
+.install-cmd {
+  display: flex;
+  align-items: center;
+  gap: 10px;                 // gap-2.5
+  border: 1px solid var(--line-strong);
+  background-color: var(--panel);
+  padding: 14px 18px;        // px-[18px] py-3.5
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg-2);
+
+  .install-cmd-prefix {
+    color: var(--muted);
+    user-select: none;
+  }
+
+  .install-cmd-text {
+    color: var(--fg);
+    flex: 1;
+  }
+
+  .install-cmd-copy {
+    color: var(--muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color var(--duration) ease;
+
+    &:hover {
+      color: var(--fg);
+    }
+  }
+}
+
+// ── Feature Card ────────────────────────────────────────────────────────────
+// Simple text-based feature cards
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 28px 24px;        // px-6 py-7
+
+  .feature-card-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+
+  .feature-card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--fg-2);
+  }
+
+  .feature-card-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+}
+
+// ── Code Block ──────────────────────────────────────────────────────────────
+.code-block {
+  background-color: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;        // px-5 py-[18px]
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.85;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--fg-2);
+}
+
+// Inline code
+code:not(pre code) {
+  background-color: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+}
+
+// ── Blinking Caret / Cursor ─────────────────────────────────────────────────
+.caret {
+  display: inline-block;
+  height: 1em;
+  width: 0.55em;
+  background-color: var(--accent);
+  animation: caret 1.1s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+
+// ── Ticker / Marquee ────────────────────────────────────────────────────────
+.ticker-wrap {
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+
+.ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 70s linear infinite;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  font-size: 13px;
+  color: var(--fg-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &::after {
+    content: "·";
+    color: var(--muted);
+  }
+}
+
+// ── Divider ─────────────────────────────────────────────────────────────────
+.divider {
+  border: none;
+  border-top: 1px solid var(--line);
+}
+
+// ── Footer ──────────────────────────────────────────────────────────────────
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 48px 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 10px 24px;
+  color: var(--muted);
+  font-size: 12px;
+  background-color: var(--bg);
+  flex-shrink: 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: 2fr repeat(3, 1fr);
+  }
+}
+
+.footer-col-title {
+  font-weight: 500;
+  color: var(--fg);
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.footer-link {
+  display: block;
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 13px;
+  transition: color var(--duration) ease;
+
+  &:hover {
+    color: var(--fg-2);
+  }
+}
+
+// ── Figure & Figcaption ─────────────────────────────────────────────────────
+figure {
+  margin: 24px 0;
+  text-align: center;
+
+  img {
+    margin: 0 auto;
+  }
+
+  figcaption {
+    text-align: center !important;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 10px 16px;
+    border-top: 1px solid var(--line);
+    background-color: var(--surface-2);
+
+    strong, b {
+      color: var(--fg);
+      font-weight: 600;
+    }
+  }
+
+  &.center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+.center {
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+}

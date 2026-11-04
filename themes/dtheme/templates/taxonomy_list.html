@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}All Tags &middot; {{ config.title }}{% endblock title %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+    <div class="mb-8 pb-8 border-b border-line">
+        <a href="{{ config.base_url }}" class="text-xs text-muted font-mono hover:text-accent">&larr; Back to Home</a>
+        <h1 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">
+            All Tags
+        </h1>
+        <p class="text-sm text-fg-2">Browse content grouped by technology and topic.</p>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+        {% for term in terms %}
+        <a href="{{ term.permalink }}" class="stat-card border border-line bg-panel hover:border-line-strong transition rounded inline-flex flex-row items-center gap-3 px-4 py-3">
+            <span class="text-accent font-mono text-sm">#{{ term.name }}</span>
+            <span class="tag text-xs">{{ term.pages | length }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

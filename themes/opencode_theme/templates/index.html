@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+{# ── HERO SECTION ──────────────────────────────────────────────────────── #}
+<section class="section-lg relative grid-bg overflow-hidden text-center">
+    <div class="glow"></div>
+    <div class="relative z-10 flex flex-col items-center gap-6 max-w-4xl mx-auto px-6">
+        <div data-reveal style="--i:0">
+            <span class="tag tag-accent">
+                <span class="size-1.5 rounded-full bg-accent inline-block"></span>
+                Systems &middot; Security &middot; Terminal Fu
+            </span>
+        </div>
+
+        <h1 class="font-display text-4xl lg:text-7xl font-bold tracking-tight text-fg" data-reveal style="--i:1">
+            {{ config.extra.hero_title | default(value="Code. Break. Automate.") }}
+        </h1>
+
+        <p class="text-base lg:text-lg text-fg-2 max-w-2xl mx-auto" data-reveal style="--i:2">
+            {{ config.description | default(value="OSCP certified cybersecurity enthusiast who loves breaking systems for fun. Stuck in vim, writing fast terminal tooling in Rust.") }}
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2" data-reveal style="--i:3">
+            <a href="#posts" class="btn btn-accent">
+                View Articles &amp; Projects &darr;
+            </a>
+            <a href="{{ get_url(path='about') }}" class="btn">
+                About Me &rarr;
+            </a>
+            <a href="https://github.com/heil-hydrant" target="_blank" rel="noopener" class="btn btn-ghost">
+                GitHub &rarr;
+            </a>
+        </div>
+
+        {# ── Interactive Terminal Window ── #}
+        <div class="w-full max-w-3xl mt-8 text-left" data-reveal style="--i:4">
+            <div class="window">
+                <div class="window-chrome">
+                    <span class="dot dot--red"></span>
+                    <span class="dot dot--yellow"></span>
+                    <span class="dot dot--green"></span>
+                    <span class="text-xs text-muted font-mono ml-2">darkseid@apokolips: ~</span>
+                </div>
+                <div class="window-body">
+<span class="text-muted"># Initialize terminal session</span>
+<span class="text-accent">$</span> whoami
+<span class="text-good">darkseid</span> &middot; OSCP Certified &middot; Systems &amp; Security
+
+<span class="text-accent">$</span> cat ~/.profile
+<span class="text-fg-2">Keyboard fu: <span class="text-accent">Rust</span>, <span class="text-warning">Python</span>, <span class="text-good">Bash</span>, <span class="text-fg">Vim 8/9 script</span>
+CTF: Active player at Hack The Box
+Workflow: Tmux multiplexer + Vim IDE</span>
+
+<span class="text-accent">$</span> cargo run --release -p zxc
+<span class="text-fg-2">[zxc] Terminal-based intercepting proxy active on 127.0.0.1:8080
+[zxc] User interface: tmux split + vim buffer
+[zxc] Ingesting traffic... </span><span class="caret"></span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ── TICKER / MARQUEE BAR ──────────────────────────────────────────────── #}
+<div class="ticker-wrap bg-surface-2">
+    <div class="ticker">
+        <div class="ticker-item"><span class="size-2 rounded-full bg-good inline-block"></span> Online &amp; Hacking</div>
+        <div class="ticker-item">Rust</div>
+        <div class="ticker-item">Vim &amp; Neovim</div>
+        <div class="ticker-item">Tmux</div>
+        <div class="ticker-item">OSCP Certified</div>
+        <div class="ticker-item">Intercepting Proxy</div>
+        <div class="ticker-item">Hack The Box</div>
+        <div class="ticker-item">OpenCode Design System</div>
+        <div class="ticker-item">Low-Level Systems</div>
+        <div class="ticker-item">Linux &amp; Bash</div>
+        {# Duplicate for smooth infinite loop #}
+        <div class="ticker-item"><span class="size-2 rounded-full bg-good inline-block"></span> Online &amp; Hacking</div>
+        <div class="ticker-item">Rust</div>
+        <div class="ticker-item">Vim &amp; Neovim</div>
+        <div class="ticker-item">Tmux</div>
+        <div class="ticker-item">OSCP Certified</div>
+        <div class="ticker-item">Intercepting Proxy</div>
+        <div class="ticker-item">Hack The Box</div>
+        <div class="ticker-item">OpenCode Design System</div>
+        <div class="ticker-item">Low-Level Systems</div>
+        <div class="ticker-item">Linux &amp; Bash</div>
+    </div>
+</div>
+
+{# ── STATS / HIGHLIGHTS ROW ────────────────────────────────────────────── #}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b border-line">
+    <div class="stat-card border-b sm:border-b-0 sm:border-r border-line" data-reveal style="--i:0">
+        <div class="stat-value text-accent">OSCP</div>
+        <div class="text-fg font-medium text-sm">Certified Security</div>
+        <div class="stat-label">Offensive Security Certified Professional.</div>
+    </div>
+    <div class="stat-card border-b sm:border-b-0 lg:border-r border-line" data-reveal style="--i:1">
+        <div class="stat-value text-fg">Rust</div>
+        <div class="text-fg font-medium text-sm">Primary Language</div>
+        <div class="stat-label">Writing fast, memory-safe terminal interception tools.</div>
+    </div>
+    <div class="stat-card border-b sm:border-b-0 sm:border-r border-line" data-reveal style="--i:2">
+        <div class="stat-value text-fg">Vim + Tmux</div>
+        <div class="text-fg font-medium text-sm">Keyboard-Driven</div>
+        <div class="stat-label">Fast, distraction-free terminal user interfaces.</div>
+    </div>
+    <div class="stat-card" data-reveal style="--i:3">
+        <div class="stat-value text-fg">100%</div>
+        <div class="text-fg font-medium text-sm">Open Source</div>
+        <div class="stat-label">All code and tooling public on GitHub.</div>
+    </div>
+</div>
+
+{# ── POSTS / ARTICLES LIST ─────────────────────────────────────────────── #}
+<section id="posts" class="section">
+    <div class="label" data-reveal style="--i:0">
+        <span class="label-text text-accent">01 &middot; Writings &amp; Projects</span>
+        <span class="text-muted">Latest posts</span>
+    </div>
+
+    <h2 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-fg mb-8" data-reveal style="--i:1">
+        Recent Work
+    </h2>
+
+    {% set show_pages = section.pages %}
+    {% if paginator %}
+        {% set show_pages = paginator.pages %}
+    {% endif %}
+
+    <div class="flex flex-col gap-6">
+        {% for page in show_pages %}
+        <article class="window border border-line bg-panel hover:border-line-strong transition" data-reveal style="--i:{{ loop.index0 }}">
+            <div class="window-chrome bg-surface-2 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="dot dot--green"></span>
+                    <span class="text-xs text-muted font-mono">{{ page.date | default(value="Article") }}</span>
+                </div>
+                {% if page.reading_time %}
+                <span class="text-xs text-muted font-mono">{{ page.reading_time }} min read</span>
+                {% endif %}
+            </div>
+            <div class="p-6 flex flex-col gap-3">
+                <h3 class="font-display text-2xl font-bold text-fg hover:text-accent transition">
+                    <a href="{{ page.permalink }}">{{ page.title }}</a>
+                </h3>
+
+                {% if page.description %}
+                <p class="text-sm text-fg-2 leading-relaxed">
+                    {{ page.description }}
+                </p>
+                {% endif %}
+
+                <div class="flex flex-wrap items-center justify-between gap-4 mt-2 pt-4 border-t border-line">
+                    <div class="flex flex-wrap items-center gap-2">
+                        {% if page.taxonomies and page.taxonomies.tags %}
+                            {% for tag in page.taxonomies.tags %}
+                            <a href="{{ get_url(path='tags/' ~ tag) }}" class="tag text-xs hover:border-accent hover:text-accent">
+                                #{{ tag }}
+                            </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <a href="{{ page.permalink }}" class="text-xs font-mono text-accent hover:underline">
+                        Read post &rarr;
+                    </a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    {# ── Pagination ── #}
+    {% if paginator %}
+    <div class="flex items-center justify-between pt-12 border-t border-line mt-12 text-sm font-mono">
+        <div>
+            {% if paginator.previous %}
+            <a href="{{ paginator.previous }}" class="btn btn-ghost">&larr; Newer Posts</a>
+            {% endif %}
+        </div>
+        <div class="text-xs text-muted">
+            Page {{ paginator.current_index }} of {{ paginator.number_pagers }}
+        </div>
+        <div>
+            {% if paginator.next %}
+            <a href="{{ paginator.next }}" class="btn btn-ghost">Older Posts &rarr;</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock content %}

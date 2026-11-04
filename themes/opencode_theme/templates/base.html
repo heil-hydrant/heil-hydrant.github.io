@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="{{ config.default_language | default(value='en') }}" data-accent="{{ config.extra.accent_color | default(value='red') }}" class="accent-{{ config.extra.accent_color | default(value='red') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{{ config.description | default(value=config.title) }}{% endblock %}">
+    <title>{% block title %}{{ config.title }}{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ get_url(path='main.css') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ get_url(path='favicon.svg') }}">
+    
+    {# Feeds #}
+    {% if config.generate_feeds %}
+        {% for feed in config.feed_filenames %}
+            {% if feed is containing(pat="atom") %}
+                <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom Feed" href="{{ get_url(path=feed, trailing_slash=false) }}" />
+            {% endif %}
+            {% if feed is containing(pat="rss") %}
+                <link rel="alternate" type="application/rss+xml" title="{{ config.title }} RSS Feed" href="{{ get_url(path=feed, trailing_slash=false) }}" />
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {# Google Fonts fallback for IBM Plex Mono & Space Grotesk #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-bg text-fg">
+    <div class="site-wrapper min-h-screen overflow-x-hidden bg-bg text-fg">
+        <div class="container min-h-screen flex flex-col justify-between">
+            <div>
+                {# ── Top Navigation ──────────────────────────────── #}
+                <nav class="nav">
+                    <a href="{{ config.base_url }}" class="nav-logo">
+                        <span class="text-accent">▸</span> {{ config.extra.logo_text | default(value=config.title) }}
+                    </a>
+                    <div class="nav-links">
+                        <a href="{{ config.base_url }}" class="hover:text-accent">Home</a>
+                        {% if config.extra.menu_items %}
+                            {% for item in config.extra.menu_items %}
+                                <a href="{{ item.url | replace(from='$BASE_URL', to=config.base_url) }}" 
+                                   {% if item.newtab %}target="_blank" rel="noopener"{% endif %}
+                                   class="hover:text-accent">
+                                    {{ item.name }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            <a href="{{ get_url(path='about') }}" class="hover:text-accent">About</a>
+                        {% endif %}
+                        {% if config.taxonomies %}
+                            <a href="{{ get_url(path='tags') }}" class="hover:text-accent">Tags</a>
+                        {% endif %}
+                        <button id="accent-toggle" type="button" class="tag text-xs cursor-pointer hover:border-accent ml-2" title="Switch accent color (Red / Green)">
+                            <span class="size-2 rounded-full inline-block bg-accent"></span>
+                            <span id="accent-label" class="font-mono text-[11px]">{{ config.extra.accent_color | default(value='red') }}</span>
+                        </button>
+                    </div>
+                </nav>
+
+                {# ── Main Page Content ────────────────────────────── #}
+                <main>
+                    {% block content %}{% endblock %}
+                </main>
+            </div>
+
+            {# ── Site Footer ──────────────────────────────────────── #}
+            <footer class="footer mt-16">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+                    <div>
+                        {% if config.extra.copyright_html and config.extra.copyright_html != " " %}
+                            {{ config.extra.copyright_html | safe }}
+                        {% else %}
+                            © {{ now() | date(format='%Y') }} {{ config.extra.author | default(value=config.title) }} · MIT
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-accent font-mono">opencode_theme</span>
+                        <span>::</span>
+                        <span>monospace &amp; terminal native</span>
+                        {% if config.generate_feeds %}
+                        <span>::</span>
+                        <a href="{{ get_url(path='atom.xml') }}" class="text-accent hover:underline">Atom</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="{{ get_url(path='js/reveal.js') }}" defer></script>
+    <script src="{{ get_url(path='js/copy.js') }}" defer></script>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('theme-accent');
+            if (saved) {
+                document.documentElement.setAttribute('data-accent', saved);
+                var label = document.getElementById('accent-label');
+                if (label) label.textContent = saved;
+            }
+            var btn = document.getElementById('accent-toggle');
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    var current = document.documentElement.getAttribute('data-accent') || 'red';
+                    var next = current === 'red' ? 'green' : 'red';
+                    document.documentElement.setAttribute('data-accent', next);
+                    localStorage.setItem('theme-accent', next);
+                    var label = document.getElementById('accent-label');
+                    if (label) label.textContent = next;
+                });
+            }
+        })();
+    </script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

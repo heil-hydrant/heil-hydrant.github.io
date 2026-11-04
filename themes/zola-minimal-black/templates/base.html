@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% set default_theme = "dark" %}
+{% if config.extra.theme and config.extra.theme.default_theme %}
+  {% set default_theme = config.extra.theme.default_theme %}
+{% endif %}
+<html
+  lang="{{ lang | default(value='en') }}"
+  data-theme="{{ default_theme }}"
+  data-default-theme="{{ default_theme }}"
+  data-cb-collapse-enabled="{{ config.extra.cb_collapse_enabled | default(value=true) }}"
+  data-cb-collapse-default="{{ config.extra.cb_collapse_default | default(value='expanded') }}"
+  data-cb-collapse-lines="{{ config.extra.cb_collapse_lines | default(value=25) }}"
+  data-cb-collapse-auto-height="{{ config.extra.cb_collapse_auto_height | default(value=false) }}"
+  data-cb-collapse-collapsed-height="{{ config.extra.cb_collapse_collapsed_height | default(value=320) }}"
+>
+<head>
+  {% include "partials/head.html" %}
+</head>
+<body class="min-h-screen bg-bg text-text antialiased">
+  <div class="flex min-h-screen flex-col">
+    {% include "partials/header.html" %}
+    <main class="flex-1">
+      {% block main %}{% endblock main %}
+    </main>
+    {% include "partials/footer.html" %}
+  </div>
+
+  {% include "partials/search.html" %}
+  {% include "partials/dock.html" %}
+
+  <script src="{{ get_url(path='js/theme.js') }}" defer></script>
+  <script src="{{ get_url(path='js/dock.js') }}" defer></script>
+  <script src="{{ get_url(path='js/search.js') }}" defer></script>
+  <script src="{{ get_url(path='js/mermaid.js') }}" defer></script>
+  <script src="{{ get_url(path='js/main.js') }}" defer></script>
+</body>
+</html>

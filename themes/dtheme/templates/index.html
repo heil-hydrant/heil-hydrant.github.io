@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="relative grid-bg overflow-hidden py-3 sm:py-4 flex-1 flex flex-col min-h-0">
+    <div class="glow pointer-events-none"></div>
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 flex-1 flex flex-col min-h-0">
+        
+        {# ── Interactive Full Terminal Window ── #}
+        <div id="terminal-window" class="terminal-window terminal-window--hero window flex-1 flex flex-col min-h-0">
+            {# Window Chrome Header #}
+            <div class="window-chrome flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="dot dot--red"></span>
+                    <span class="dot dot--yellow"></span>
+                    <span class="dot dot--green"></span>
+                    <span class="text-xs font-mono ml-2"><span class="prompt-user">darkseid</span><span class="text-muted">@</span><span class="prompt-host">apokolips</span><span class="text-muted">: ~ (zsh)</span></span>
+                </div>
+                <div class="terminal-actions">
+                    <button id="term-clear-btn" type="button" class="terminal-action-btn" title="Clear terminal screen (Ctrl+L)">Clear</button>
+                    <button id="term-fullscreen-btn" type="button" class="terminal-action-btn" title="Toggle Fullscreen mode">Fullscreen</button>
+                </div>
+            </div>
+
+            {# Terminal Body / Interactive Console Screen #}
+            <div id="terminal-body" class="terminal-body">
+                <div class="terminal-scanlines"></div>
+                <canvas id="terminal-matrix" class="terminal-matrix-canvas"></canvas>
+                <div id="terminal-output"><div class="terminal-line"><span class="term-accent">  ██████╗  █████╗ ██████╗ ██╗  ██╗███████╗███████╗██╗██████╗ 
+  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔════╝██╔════╝██║██╔══██╗
+  ██║  ██║███████║██████╔╝█████═╝ ███████╗█████╗  ██║██║  ██║
+  ██║  ██║██╔══██║██╔══██╗██╔═██╗ ╚════██║██╔══╝  ██║██║  ██║
+  ██████╔╝██║  ██║██║  ██║██║ ╚██╗███████║███████╗██║██████╔╝
+  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚═════╝</span>
+<span class="term-good">Session:</span> <span class="prompt-user">darkseid</span><span class="term-muted">@</span><span class="prompt-host">apokolips</span> (x86_64-linux-hardened)
+<span class="term-good">Status:</span>  OSCP Certified Security Researcher &middot; Systems &amp; Terminal Fu
+Type <span class="term-accent">'help'</span> to inspect manual or <span class="term-accent">'zxc'</span> to view project.</div></div>
+                <div class="terminal-input-line"><span class="terminal-prompt"><span class="prompt-user">darkseid</span><span class="prompt-at">@</span><span class="prompt-host">apokolips</span><span class="prompt-colon">:</span><span class="prompt-path">~</span><span class="prompt-char">$</span></span><span id="terminal-input-display" class="terminal-input-display"></span><span class="terminal-cursor"></span><input type="text" id="terminal-input" class="terminal-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus /></div>
+            </div>
+
+            {# Terminal Quick-Action Hints Strip #}
+            <div class="terminal-hints">
+                <span class="text-xs text-muted font-mono">Quick commands:</span>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="help">help</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="whoami">whoami</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="ls">ls</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="zxc">zxc</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="theme">theme</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="matrix">matrix</button>
+                <button type="button" class="terminal-hint-chip" data-term-cmd="clear">clear</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{# Embed Zola page data for the terminal engine #}
+<script>
+    window.__TERMINAL_DATA__ = {
+        title: {{ config.title | default(value="darkseid's site") | json_encode | safe }},
+        author: {{ config.extra.author | default(value="darkseid") | json_encode | safe }},
+        description: {{ config.description | default(value="OSCP certified cybersecurity enthusiast.") | json_encode | safe }},
+        posts: [
+            {% if section.pages %}
+                {% for page in section.pages %}
+                    {
+                        title: {{ page.title | json_encode | safe }},
+                        url: {{ page.permalink | json_encode | safe }},
+                        date: {{ page.date | default(value="2025-03-20") | json_encode | safe }},
+                        desc: {{ page.description | default(value="") | json_encode | safe }}
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            {% endif %}
+        ]
+    };
+</script>
+{% endblock content %}

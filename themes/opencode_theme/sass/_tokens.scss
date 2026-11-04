@@ -1,0 +1,90 @@
+// ============================================================================
+// OpenCode Design Tokens
+// Warm dark mode, monospace-first aesthetic
+// ============================================================================
+
+:root {
+  // ── Surfaces ──────────────────────────────────────────────────────────────
+  --bg:        #000000;
+  --surface-2: #0a0a0a;
+  --panel:     #050505;
+  --window:    #0c0c0c;
+
+  // ── Borders ───────────────────────────────────────────────────────────────
+  --line:        #1c1c1c;
+  --line-strong: #2a2a2a;
+
+  // ── Text ──────────────────────────────────────────────────────────────────
+  --fg:    #ecebe4;
+  --fg-2:  #a6a49c;
+  --muted: #6c6a63;
+
+  // ── Accents (Default Red #ff0000) ─────────────────────────────────────────
+  --accent:               #ff0000;
+  --accent-fg:            #ffffff;
+  --accent-hover:         #cc0000;
+  --accent-glow:          rgba(255, 0, 0, 0.16);
+  --accent-glow-subtle:   rgba(255, 0, 0, 0.12);
+  --accent-border:        rgba(255, 0, 0, 0.3);
+  --selection-bg:         rgba(255, 0, 0, 0.25);
+  --good:                 #0ca30c;
+  --warning:              #fab219;
+  --critical:             #d03b3b;
+
+  // ── Typography ────────────────────────────────────────────────────────────
+  --font-body:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-sans:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  // ── Spacing scale ────────────────────────────────────────────────────────
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  // ── Radius ────────────────────────────────────────────────────────────────
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-full: 9999px;
+
+  // ── Transitions ───────────────────────────────────────────────────────────
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration: 0.25s;
+}
+
+// ── Accent Color Themes (Switchable via config or [data-accent]) ───────────
+
+// Red (#ff0000)
+:root[data-accent="red"],
+.accent-red {
+  --accent:               #ff0000;
+  --accent-fg:            #ffffff;
+  --accent-hover:         #cc0000;
+  --accent-glow:          rgba(255, 0, 0, 0.16);
+  --accent-glow-subtle:   rgba(255, 0, 0, 0.12);
+  --accent-border:        rgba(255, 0, 0, 0.3);
+  --selection-bg:         rgba(255, 0, 0, 0.25);
+}
+
+// Green (#00ff00)
+:root[data-accent="green"],
+.accent-green {
+  --accent:               #00ff00;
+  --accent-fg:            #000000;
+  --accent-hover:         #00cc00;
+  --accent-glow:          rgba(0, 255, 0, 0.16);
+  --accent-glow-subtle:   rgba(0, 255, 0, 0.12);
+  --accent-border:        rgba(0, 255, 0, 0.3);
+  --selection-bg:         rgba(0, 255, 0, 0.25);
+}

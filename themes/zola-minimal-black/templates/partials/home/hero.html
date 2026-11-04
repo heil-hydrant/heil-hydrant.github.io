@@ -1,0 +1,39 @@
+{% if config.extra.hero %}
+{% set hero = config.extra.hero %}
+<section class="card card-pad">
+  <div class="u-flex-between" style="flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+    {% if hero.badge %}
+      <span class="card-badge-soft">{{ hero.badge }}</span>
+    {% endif %}
+    {% if hero.available %}
+      <span class="text-xs text-muted">
+        <span style="color: #10b981;">●</span> {{ hero.available_label | default(value="Available") }}
+      </span>
+    {% endif %}
+  </div>
+
+  <h1 class="heading-page">{% if hero.title %}{{ hero.title }}{% else %}{{ config.title | default(value="Minimal Black") }}{% endif %}</h1>
+  {% if hero.role %}
+    <p class="text-accent" style="margin: 0.35rem 0 0.75rem 0; font-weight: 500;">{{ hero.role }}</p>
+  {% endif %}
+  {% if hero.summary %}
+    <p class="text-muted" style="line-height: 1.65; margin-bottom: 1.25rem;">{{ hero.summary }}</p>
+  {% endif %}
+
+  <div class="u-flex u-gap-sm" style="flex-wrap: wrap;">
+    {% if hero.primary %}
+      <a class="btn-primary-sm" href="{{ hero.primary.href | safe }}">{{ hero.primary.label }}</a>
+    {% endif %}
+    {% if hero.secondary %}
+      <a class="card-cta" href="{{ hero.secondary.href | safe }}">{{ hero.secondary.label }}</a>
+    {% endif %}
+  </div>
+</section>
+{% elif config.title or config.description %}
+<section class="card card-pad">
+  <h1 class="heading-page">{{ config.title | default(value="Minimal Black") }}</h1>
+  {% if config.description %}
+    <p class="text-muted" style="line-height: 1.65; margin: 0.5rem 0 0 0;">{{ config.description }}</p>
+  {% endif %}
+</section>
+{% endif %}

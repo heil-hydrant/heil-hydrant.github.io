@@ -14,12 +14,14 @@ Terminal based intercepting proxy written in rust with tmux and vim as user
 interface.
 
 # Features
+
 * tmux and vim as user interface.
 * Disk based storage.
 * Custom http/1.1 parser to send malformed requests.
 * http/1.1 and websocket support.
 
 # Repo Links
+
 [proxy binary](https://github.com/heil-hydrant/zxc)
 
 [vim plugin](https://github.com/heil-hydrant/zxc.vim)

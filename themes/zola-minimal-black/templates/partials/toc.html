@@ -1,0 +1,35 @@
+{% if page %}
+  {% if page.toc and page.toc | length > 0 %}
+  <aside class="article-toc">
+    <div class="toc-wrapper">
+      <div class="toc-header">
+        <h3 class="toc-title">
+          <i class="fas fa-list-ul"></i>
+          <span>Table of Contents</span>
+        </h3>
+        <button class="toc-toggle" aria-label="Toggle table of contents">
+          <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+      <nav class="toc-nav">
+        <ul>
+          {% for h1 in page.toc %}
+            <li>
+              <a class="toc-link" href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
+              {% if h1.children and h1.children | length > 0 %}
+                <ul>
+                  {% for h2 in h1.children %}
+                    <li>
+                      <a class="toc-link" href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  {% endif %}
+{% endif %}

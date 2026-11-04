@@ -1,0 +1,245 @@
+base_url = "https://minimal-black-demo.netlify.app"
+title = "Minimal Black Theme"
+description = "A minimal, dark-mode first personal site, or whatever else you want it to be."
+default_language = "en"
+compile_sass = false
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
+
+taxonomies = [
+  { name = "tags", feed = true },
+  { name = "categories", feed = true },
+]
+
+[markdown]
+highlight_code = true
+highlight_theme = "base16-ocean-dark"
+render_emoji = true
+external_links_target_blank = true
+external_links_no_follow = true
+external_links_no_referrer = true
+smart_punctuation = true
+
+[search]
+include_title = true
+include_description = true
+include_path = true
+include_content = true
+truncate_content_length = 300
+
+[extra]
+brand = "Zola Minimal Black"
+favicon = "/favicon.svg"
+apple_touch_icon = "/favicon.svg"
+logo = ""
+projects_intro = "Selected open-source tools, experiments, and production systems."
+blog_intro = "Notes on software engineering, architecture, minimal design, and systems."
+
+# Code block collapse settings (mapped to <html> data attributes)
+cb_collapse_enabled = true
+cb_collapse_default = "expanded"
+cb_collapse_lines = 25
+cb_collapse_auto_height = false
+cb_collapse_collapsed_height = 320
+
+[extra.manifest]
+theme_color = "#ff0000"
+background_color = "#000000"
+categories = ["portfolio", "blog", "technology"]
+
+[extra.theme]
+default_theme = "dark" # Options: "light", "dark", "system"
+
+# Main Header Navigation (ported from .Site.Menus.main)
+[[extra.menu_main]]
+name = "Home"
+url = "/"
+
+[[extra.menu_main]]
+name = "Blog"
+url = "/blog/"
+
+[[extra.menu_main]]
+name = "Projects"
+url = "/projects/"
+
+[[extra.menu_main]]
+name = "About"
+url = "/about/"
+
+# Floating Dock Navigation (ported from .Site.Menus.dock)
+[[extra.menu_dock]]
+name = "Home"
+url = "/"
+icon = "fas fa-home"
+
+[[extra.menu_dock]]
+name = "Blog"
+url = "/blog/"
+icon = "fas fa-pen-nib"
+
+[[extra.menu_dock]]
+name = "Projects"
+url = "/projects/"
+icon = "fas fa-code-branch"
+
+[[extra.menu_dock]]
+name = "About"
+url = "/about/"
+icon = "fas fa-user"
+
+# Social Links (ported from [[params.social]])
+[[extra.social]]
+name = "GitLab"
+label = "GitLab"
+url = "https://gitlab.com/jimchr12/hugo-minimal-black"
+icon = "fab fa-gitlab"
+
+[[extra.social]]
+name = "GitHub"
+label = "GitHub"
+url = "https://github.com/"
+icon = "fab fa-github"
+
+[[extra.social]]
+name = "RSS"
+label = "RSS"
+url = "/atom.xml"
+icon = "fas fa-rss"
+
+[extra.home]
+sections = ["hero", "now", "tech-marquee", "projects", "posts", "contact"]
+show_now_section = true
+show_featured_projects = true
+show_latest_posts = true
+featured_projects_limit = 3
+latest_posts_limit = 5
+projects_title = "Selected Work"
+projects_subtitle = "Recent projects and open-source contributions."
+blog_title = "Latest Writing"
+blog_subtitle = "Thoughts on software, tooling, and design."
+tech_marquee_label = "Experienced In"
+
+[[extra.home.tech]]
+label = "Rust"
+icon = "devicon-rust-original"
+
+[[extra.home.tech]]
+label = "TypeScript"
+icon = "devicon-typescript-plain"
+
+[[extra.home.tech]]
+label = "Python"
+icon = "devicon-python-plain"
+
+[[extra.home.tech]]
+label = "Go"
+icon = "devicon-go-original-wordmark"
+
+[[extra.home.tech]]
+label = "Tailwind CSS"
+icon = "devicon-tailwindcss-original"
+
+[[extra.home.tech]]
+label = "Docker"
+icon = "devicon-docker-plain"
+
+[[extra.home.tech]]
+label = "Linux"
+icon = "devicon-linux-plain"
+
+[extra.hero]
+badge = "Software Engineer & Builder"
+title = "Minimal Black for Zola"
+role = "Full-Stack Developer & Open-Source Enthusiast"
+summary = "A minimal, dark-mode first theme featuring true #000000 backgrounds, purple accents, floating dock navigation, instant search, and clean typography."
+location = "Remote / Worldwide"
+focus = "Systems & Web Engineering"
+available = true
+available_label = "Available for select projects"
+now_label = "Now"
+now_intro = "What I am currently focused on:"
+now = [
+  "Porting minimal, fast themes to the Zola ecosystem",
+  "Building accessible, zero-bloat web interfaces",
+  "Exploring Rust, WebAssembly, and static site tooling"
+]
+
+[extra.hero.primary]
+label = "View Projects"
+href = "/projects/"
+
+[extra.hero.secondary]
+label = "Read the Blog"
+href = "/blog/"
+
+[extra.about]
+title = "About Me"
+subtitle = "Engineer, designer, and minimalist."
+intro = "I build fast, resilient web applications and developer tools with a focus on clarity and performance."
+bio = "With experience across systems programming and modern front-end architecture, I enjoy stripping away unnecessary complexity to let content and craft stand out."
+
+[[extra.about.stats]]
+value = "5+"
+label = "Years Experience"
+
+[[extra.about.stats]]
+value = "25+"
+label = "Open Source Repos"
+
+[[extra.about.stats]]
+value = "100%"
+label = "Dark Mode Native"
+
+[[extra.about.experience]]
+role = "Senior Software Engineer"
+company = "Acme Systems"
+period = "2023 — Present"
+description = "Leading core platform architecture, developer tooling, and performance optimization."
+
+[[extra.about.experience]]
+role = "Full-Stack Developer"
+company = "Studio Minimal"
+period = "2020 — 2023"
+description = "Built high-contrast, accessible web applications and design systems."
+
+[[extra.about.education]]
+degree = "B.Sc. in Computer Science"
+school = "Technical University"
+period = "2016 — 2020"
+
+[[extra.about.skills]]
+label = "Rust"
+icon = "devicon-rust-original"
+
+[[extra.about.skills]]
+label = "Python"
+icon = "devicon-python-plain"
+
+[[extra.about.skills]]
+label = "TypeScript"
+icon = "devicon-typescript-plain"
+
+[[extra.about.skills]]
+label = "Tailwind CSS"
+icon = "devicon-tailwindcss-original"
+
+[extra.about.cta]
+title = "Want to collaborate?"
+description = "Always open to discussing interesting engineering problems or open-source projects."
+button_text = "Get in Touch"
+button_url = "mailto:hello@example.com"
+
+[extra.analytics]
+google_analytics = ""
+
+[extra.analytics.plausible]
+enabled = false
+domain = ""
+script_url = "https://plausible.io/js/script.js"
+
+[extra.analytics.umami]
+enabled = false
+script_url = ""
+website_id = ""

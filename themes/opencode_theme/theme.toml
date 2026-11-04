@@ -1,0 +1,13 @@
+name = "opencode_theme"
+description = "A terminal-native, monospace-first dark theme inspired by OpenCode and modern engineering platforms"
+license = "MIT"
+homepage = "https://github.com/heil-hydrant/opencode_theme"
+min_version = "0.20.0"
+
+[author]
+name = "darkseid"
+homepage = "https://darkseid.is"
+
+[extra]
+# Choose default accent color: "red" (#ff0000) or "green" (#00ff00)
+accent_color = "red"

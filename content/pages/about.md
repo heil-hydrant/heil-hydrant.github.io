@@ -15,6 +15,7 @@ Can also Keyboard fu in
 Plays CTF occasionally at [Hackthebox][Hackthebox]
 
 # Social
+
 - [reddit](https://www.reddit.com/user/ghost_vici/)
 - [x](https://x.com/_darkseid_is_)
 

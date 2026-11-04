@@ -1,0 +1,17 @@
+{
+  "name": "zola-minimal-black",
+  "version": "1.0.0",
+  "description": "Zola port of the Hugo Minimal Black theme",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/css/main.css -o ./static/css/bundle.css --minify",
+    "watch:css": "tailwindcss -i ./static/css/main.css -o ./static/css/bundle.css --watch"
+  },
+  "author": "Jim Christopoulos",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18"
+  }
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}404 &middot; Command Not Found &middot; {{ config.title }}{% endblock title %}
+
+{% block content %}
+<section class="section-lg relative overflow-hidden text-center py-16">
+    <div class="glow-center"></div>
+    <div class="relative z-10 max-w-xl mx-auto px-6">
+        <div class="window border border-line-strong bg-panel text-left">
+            <div class="window-chrome flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <span class="dot dot--red"></span>
+                    <span class="dot dot--yellow"></span>
+                    <span class="dot dot--green"></span>
+                    <span class="text-xs font-mono ml-2"><span class="prompt-user">darkseid</span><span class="text-muted">@</span><span class="prompt-host">apokolips</span><span class="text-muted">: /404</span></span>
+                </div>
+            </div>
+            <div class="p-8 font-mono text-xs">
+                <div class="text-accent mb-2">$ curl -I {{ current_url | default(value='https://darkseid.is/unknown') }}</div>
+                <div class="text-error font-bold mb-4">HTTP/1.1 404 Not Found</div>
+                <div class="text-fg-2 mb-6">zsh: command not found: The route you requested does not exist or has been relocated.</div>
+                <div class="pt-4 border-t border-line flex items-center gap-4">
+                    <a href="{{ config.base_url }}" class="btn btn-accent">&larr; Return to Home Terminal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block main %}
+<section class="layout-page-tight">
+  <div class="page-int">
+    <header class="page-header">
+      <h1 class="heading-page">{{ section.title }}</h1>
+      {% if section.description %}
+        <p class="page-header__desc">{{ section.description }}</p>
+      {% endif %}
+    </header>
+
+    {% if section.content %}
+      <div class="markdown-body" style="margin-bottom: 2rem;">
+        {{ section.content | safe }}
+      </div>
+    {% endif %}
+
+    <div class="posts-list">
+      {% for page in section.pages %}
+        <article class="card-home--post card">
+          <div class="card-pad">
+            {% if page.date %}
+              <time class="card-post__date">{{ page.date | date(format="%B %d, %Y") }}</time>
+            {% endif %}
+            <h2 class="card-post__title">
+              <a href="{{ page.permalink }}">{{ page.title }}</a>
+            </h2>
+            {% if page.description %}
+              <p class="card-post__summary">{{ page.description }}</p>
+            {% elif page.summary %}
+              <div class="card-post__summary">{{ page.summary | safe }}</div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock main %}

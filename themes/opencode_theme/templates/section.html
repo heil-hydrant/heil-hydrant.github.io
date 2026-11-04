@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} &middot; {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+    <div class="mb-8 pb-8 border-b border-line">
+        <a href="{{ config.base_url }}" class="text-xs text-muted font-mono hover:text-accent">&larr; Back to Home</a>
+        <h1 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">
+            {{ section.title }}
+        </h1>
+        {% if section.description %}
+        <p class="text-base text-fg-2">{{ section.description }}</p>
+        {% endif %}
+    </div>
+
+    {% if section.content %}
+    <div class="prose text-fg-2 text-sm leading-relaxed mb-12">
+        {{ section.content | safe }}
+    </div>
+    {% endif %}
+
+    {% if section.pages %}
+    <div class="flex flex-col gap-4">
+        {% for page in section.pages %}
+        <a href="{{ page.permalink }}" class="stat-card border border-line bg-panel hover:border-line-strong transition rounded block">
+            <div class="text-accent font-mono text-xs mb-1">
+                {{ page.date | default(value="Page") }}
+            </div>
+            <div class="text-fg font-semibold text-lg mb-1">{{ page.title }}</div>
+            {% if page.description %}
+            <div class="text-xs text-fg-2">{{ page.description }}</div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

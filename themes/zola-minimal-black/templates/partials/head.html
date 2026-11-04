@@ -1,0 +1,54 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+{% set site_title = config.title | default(value="Minimal Black") %}
+{% set meta_title = site_title %}
+{% if page %}
+  {% if page.title %}
+    {% set meta_title = page.title ~ " · " ~ site_title %}
+  {% endif %}
+{% elif section %}
+  {% if section.title and section.title != site_title %}
+    {% set meta_title = section.title ~ " · " ~ site_title %}
+  {% endif %}
+{% endif %}
+
+{% set meta_desc = config.description | default(value="") %}
+{% if page %}
+  {% if page.description %}
+    {% set meta_desc = page.description %}
+  {% endif %}
+{% elif section %}
+  {% if section.description %}
+    {% set meta_desc = section.description %}
+  {% endif %}
+{% endif %}
+
+{% set theme_color = "#a855f7" %}
+{% if config.extra.manifest and config.extra.manifest.theme_color %}
+  {% set theme_color = config.extra.manifest.theme_color %}
+{% endif %}
+
+<title>{{ meta_title }}</title>
+<meta name="description" content="{{ meta_desc }}" />
+<meta name="theme-color" content="{{ theme_color }}" />
+
+{% if config.extra.favicon %}
+<link rel="icon" href="{{ config.extra.favicon | safe }}" />
+{% endif %}
+
+{% if config.generate_feeds %}
+<link rel="alternate" type="application/atom+xml" title="{{ site_title }} Atom Feed" href="{{ get_url(path='atom.xml') }}" />
+{% endif %}
+
+{% include "partials/icons.html" %}
+<link rel="stylesheet" href="{{ get_url(path='css/main.css') }}" />
+{% include "partials/analytics.html" %}
+
+<div style="display: flex; justify-content: center; align-items: center;">
+<a href="https://ascii.rest/banner/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://ascii.rest/banner/darkseid.dark.svg?color=e50004&speed=slow&shadow=single&bg=000000">
+    <img alt="darkseid.is" src="https://ascii.rest/banner/darkseid.is.svg?color=e50004&speed=slow&shadow=single&bg=000000">
+  </picture>
+</a>
+</div>

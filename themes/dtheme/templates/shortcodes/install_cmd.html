@@ -1,0 +1,7 @@
+{% component install_cmd(command: string) -%}
+<div class="install-cmd my-4">
+    <span class="install-cmd-prefix">$</span>
+    <span class="install-cmd-text">{{ command }}</span>
+    <button type="button" class="install-cmd-copy" data-copy="{{ command }}" title="Copy to clipboard">Copy</button>
+</div>
+{%- endcomponent install_cmd %}
