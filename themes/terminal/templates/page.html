@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} &middot; {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+{% set tmux_sess = "main" %}
+{% set tmux_ver = "tmux 3.4" %}
+{% set term_pchar = "$" %}
+{% set term_editor = "nvim" %}
+
+{% if config.extra is defined %}
+    {% if config.extra.tmux is defined %}
+        {% if config.extra.tmux.session is defined %}{% set tmux_sess = config.extra.tmux.session %}{% endif %}
+        {% if config.extra.tmux.version is defined %}{% set tmux_ver = config.extra.tmux.version %}{% endif %}
+    {% endif %}
+    {% if config.extra.terminal is defined %}
+        {% if config.extra.terminal.prompt_char is defined %}{% set term_pchar = config.extra.terminal.prompt_char %}{% endif %}
+        {% if config.extra.terminal.editor is defined %}{% set term_editor = config.extra.terminal.editor %}{% endif %}
+    {% endif %}
+{% endif %}
+
+<section class="relative overflow-hidden py-8">
+    <div class="glow"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        
+        {# Terminal Window Wrapping the Article #}
+        <article class="window border border-line-strong bg-panel shadow-2xl">
+            {# Window Chrome Header: Tmux Statusline #}
+            <div class="window-chrome tmux-statusline flex items-center justify-between">
+                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
+                    <span class="tmux-session">[{{ tmux_sess }}]</span>
+                    <span class="tmux-tab tmux-tab--active"><span class="tmux-tab-num">0:</span>{{ term_editor }}* ~/{{ page.slug | default(value="post") }}.md</span>
+                </div>
+                <div class="tmux-right flex items-center gap-2.5">
+                    <span class="tmux-meta text-muted hidden sm:inline">{{ tmux_ver }}</span>
+                    <span class="text-line-strong hidden sm:inline">│</span>
+                    <a href="{{ config.base_url }}" class="terminal-action-btn tmux-btn font-mono text-xs">
+                        &larr; Return
+                    </a>
+                </div>
+            </div>
+
+            {# Terminal Body Containing the Article #}
+            <div class="p-6 sm:p-10">
+                <header class="mb-8 pb-8 border-b border-line">
+                    <div class="flex items-center gap-2 text-xs font-mono text-accent mb-3">
+                        <span>{{ term_pchar }}</span>
+                        <span>cat ~/{{ page.slug | default(value="post") }}.md</span>
+                    </div>
+
+                    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-fg mb-4">
+                        {{ page.title }}
+                    </h1>
+
+                    <div class="flex flex-wrap items-center gap-4 text-xs font-mono text-muted mb-4">
+                        {% if page.date %}
+                        <span>Published {{ page.date | date(format="%B %d, %Y") }}</span>
+                        {% endif %}
+                        {% if page.reading_time %}
+                        <span>&middot;</span>
+                        <span>{{ page.reading_time }} min read</span>
+                        {% endif %}
+                    </div>
+
+                    {% if page.description %}
+                    <p class="text-base text-fg-2 leading-relaxed font-mono">
+                        {{ page.description }}
+                    </p>
+                    {% endif %}
+
+                    {% if page.taxonomies and page.taxonomies.tags %}
+                    <div class="flex flex-wrap items-center gap-2 mt-4">
+                        {% for tag in page.taxonomies.tags %}
+                        <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="tag text-xs hover:border-accent hover:text-accent font-mono">
+                            #{{ tag }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </header>
+
+                {# Markdown Content #}
+                <div class="prose text-fg-2 text-sm leading-relaxed space-y-6">
+                    {{ page.content | safe }}
+                </div>
+
+                {# Footer Command Line Navigation #}
+                <div class="mt-12 pt-8 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs">
+                    <div>
+                        <a href="{{ config.base_url }}" class="btn btn-accent">&larr; Return to Home Terminal</a>
+                    </div>
+                    <div class="flex items-center gap-4 text-muted">
+                        {% if page.lower %}
+                        <a href="{{ page.lower.permalink }}" class="hover:text-accent">&larr; {{ page.lower.title }}</a>
+                        {% endif %}
+                        {% if page.higher %}
+                        <a href="{{ page.higher.permalink }}" class="hover:text-accent">{{ page.higher.title }} &rarr;</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</section>
+{% endblock content %}

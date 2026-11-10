@@ -1,0 +1,8 @@
+{% component terminal(title="terminal") -%}
+<div class="window my-6">
+    <div class="window-chrome">
+        <span class="text-xs text-muted font-mono">{{ title }}</span>
+    </div>
+    <div class="window-body">{{ body | safe }}</div>
+</div>
+{%- endcomponent terminal %}

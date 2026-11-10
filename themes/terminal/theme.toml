@@ -1,0 +1,14 @@
+name = "terminal"
+description = "A full-screen interactive tmux & zsh terminal theme for Zola with static panes, dynamic tabs, and cybernetic aesthetics"
+license = "MIT"
+homepage = "https://github.com/darkseid-is/terminal"
+demo = "https://darkseid.is"
+min_version = "0.20.0"
+tags = ["terminal", "tmux", "zsh", "dark", "cyberpunk", "portfolio", "developer"]
+
+[author]
+name = "darkseid"
+homepage = "https://github.com/darkseid-is"
+
+[extra]
+accent_color = "red"

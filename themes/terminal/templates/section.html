@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} &middot; {{ config.title }}{% endblock title %}
+{% block description %}{{ section.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+{% set tmux_sess = "main" %}
+{% set tmux_ver = "tmux 3.4" %}
+{% set term_pchar = "$" %}
+
+{% if config.extra is defined %}
+    {% if config.extra.tmux is defined %}
+        {% if config.extra.tmux.session is defined %}{% set tmux_sess = config.extra.tmux.session %}{% endif %}
+        {% if config.extra.tmux.version is defined %}{% set tmux_ver = config.extra.tmux.version %}{% endif %}
+    {% endif %}
+    {% if config.extra.terminal is defined %}
+        {% if config.extra.terminal.prompt_char is defined %}{% set term_pchar = config.extra.terminal.prompt_char %}{% endif %}
+    {% endif %}
+{% endif %}
+
+<section class="relative overflow-hidden py-8">
+    <div class="glow"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
+        
+        <div class="window border border-line-strong bg-panel shadow-2xl">
+            <div class="window-chrome tmux-statusline flex items-center justify-between">
+                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
+                    <span class="tmux-session">[{{ tmux_sess }}]</span>
+                    {% set sec_dir = section.path | replace(from="/", to="") %}
+                    <span class="tmux-tab tmux-tab--active"><span class="tmux-tab-num">0:</span>tree* ~/{{ sec_dir | default(value="posts") }}/</span>
+                </div>
+                <div class="tmux-right flex items-center gap-2.5">
+                    <span class="tmux-meta text-muted hidden sm:inline">{{ tmux_ver }}</span>
+                    <span class="text-line-strong hidden sm:inline">│</span>
+                    <a href="{{ config.base_url }}" class="terminal-action-btn tmux-btn font-mono text-xs">
+                        &larr; Return
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-10 font-mono">
+                <div class="flex items-center gap-2 text-xs text-accent mb-4">
+                    <span>{{ term_pchar }}</span>
+                    <span>ls -la ~/{{ sec_dir | default(value="posts") }}/</span>
+                </div>
+
+                <h1 class="font-display text-3xl font-bold tracking-tight text-fg mb-4">
+                    {{ section.title }}
+                </h1>
+                {% if section.description %}
+                <p class="text-sm text-fg-2 mb-8">{{ section.description }}</p>
+                {% endif %}
+
+                {% if section.pages %}
+                <div class="flex flex-col gap-4 mt-6">
+                    {% for page in section.pages %}
+                    <a href="{{ page.permalink }}" class="stat-card border border-line bg-surface-2 hover:border-accent transition rounded block p-5">
+                        <div class="text-accent font-mono text-xs mb-1">
+                            {{ page.date | default(value="Article") }}
+                        </div>
+                        <div class="text-fg font-semibold text-lg mb-1">{{ page.title }}</div>
+                        {% if page.description %}
+                        <div class="text-xs text-fg-2">{{ page.description }}</div>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock content %}

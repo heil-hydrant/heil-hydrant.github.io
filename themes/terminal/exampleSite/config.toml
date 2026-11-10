@@ -1,0 +1,102 @@
+base_url = "https://example.com"
+title = "Operator Station"
+description = "Interactive cybernetic terminal workstation"
+theme = "terminal"
+compile_sass = true
+build_search_index = false
+
+taxonomies = [
+    {name = "tags", feed = false},
+    {name = "categories", feed = false},
+]
+
+[extra]
+author = "operator"
+logo_text = "terminal"
+accent_color = "red"
+menu_items = [
+    {name = "about", url = "/about"},
+    {name = "projects", url = "/projects"},
+    {name = "github", url = "https://github.com/darkseid-is/terminal", newtab = true},
+]
+
+[extra.terminal]
+user = "operator"
+host = "workstation"
+shell = "zsh"
+prompt_char = "$"
+status = "Online · Cybernetic Systems Operator"
+welcome_tip = "Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'projects'</span> to view work."
+whoami_bio = """<span class="term-good">operator</span> &middot; Systems &amp; Low-Level Engineer
+Status:       <span class="term-good">Online &amp; Operational</span>
+Specialties:  Distributed Systems &middot; Terminal Ergonomics &middot; Rust &amp; C
+Primary:      Rust, Python, Bash, C
+Shell:        zsh 5.9 / tmux 3.4"""
+kernel = "Linux workstation 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux"
+quick_commands = ["help", "whoami", "projects", "about", "ls", "contact", "theme", "clear"]
+
+[extra.tmux]
+session = "workstation"
+version = "tmux 3.4"
+
+[[extra.tmux.windows]]
+id = "projects"
+name = "projects"
+type = "page"
+page = "projects.md"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 1:</span> <span class=\"text-fg\">projects</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "target: <span class=\"text-accent font-semibold\">open-source</span>"
+actions = [
+    { label = "View Dedicated Page →", url = "/projects/" }
+]
+
+[[extra.tmux.windows]]
+id = "about"
+name = "about"
+type = "page"
+page = "pages/about.md"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 2:</span> <span class=\"text-fg\">about</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "mode: <span class=\"text-accent font-semibold\">static-view</span>"
+actions = [
+    { label = "View Dedicated Page →", url = "/about/" }
+]
+
+[[extra.tmux.windows]]
+id = "contact"
+name = "contact"
+type = "contact"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 3:</span> <span class=\"text-fg\">contact</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "<span class=\"text-accent font-semibold\">direct channels</span>"
+
+[extra.contact]
+email = "operator@example.com"
+email_label = "SMTP"
+
+[[extra.contact.socials]]
+name = "GitHub"
+url = "https://github.com/darkseid-is/terminal"
+
+[[extra.virtual_files]]
+name = ".profile"
+size = "180B"
+date = "Jan 01 2026"
+content = """export EDITOR="vim"
+export SHELL="/bin/zsh"
+export ARCH="x86_64\""""
+
+[[extra.virtual_files]]
+name = "flag.txt"
+size = "32B"
+date = "Jan 01 2026"
+content = "<span class=\"term-accent\">FLAG{terminal_theme_ready}</span>"
+
+[[extra.virtual_files]]
+name = "mail.txt"
+size = "160B"
+date = "Jan 01 2026"
+content = """From: operator@example.com
+To: operator@workstation
+Subject: Encrypted Comms & Direct Dispatch
+
+Reach out directly at operator@example.com.
+Tip: Run 'contact' to view all channels or 'contact --copy' to copy email."""

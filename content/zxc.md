@@ -6,8 +6,23 @@ description = "Terminal based intercepting proxy written in rust with `tmux` and
 [taxonomies]
 tags = ["vim", "rust", "tmux"]
 
-# [extra]
-# show_only_description = true
+[extra]
+terminal_summary = """
+<div class="terminal-line"><span class="term-accent font-bold"># zxc – Terminal Intercepting Proxy</span></div>
+<div class="terminal-line">&nbsp;</div>
+<div class="terminal-line">Terminal based intercepting proxy written in <span class="term-accent font-semibold">Rust</span> with <span class="term-good font-semibold">tmux</span> and <span class="term-good font-semibold">vim</span> as user interface.</div>
+<div class="terminal-line">&nbsp;</div>
+<div class="terminal-line"><span class="term-heading">[KEY FEATURES]</span></div>
+<div class="terminal-line">&bull; <span class="term-bright font-semibold">Vim &amp; Tmux interface:</span> Seamless modal navigation, splits, and buffer workflows</div>
+<div class="terminal-line">&bull; <span class="term-bright font-semibold">Disk-based storage (100k+ entries):</span> Handles large request histories without lag</div>
+<div class="terminal-line">&bull; <span class="term-bright font-semibold">Custom HTTP/1.1 parser:</span> Craft, manipulate, and replay malformed/raw requests</div>
+<div class="terminal-line">&bull; <span class="term-bright font-semibold">Full protocol support (WebSocket/HTTP 1.1):</span> Bidirectional proxying and frame inspection</div>
+<div class="terminal-line">&bull; <span class="term-bright font-semibold">Ecosystem addons (ffuf, sqlmap):</span> Native external tool integration and scripts</div>
+<div class="terminal-line">&nbsp;</div>
+<div class="terminal-line"><span class="term-heading">[REPOSITORIES]</span></div>
+<div class="terminal-line">&bull; Binary: <a href="https://github.com/heil-hydrant/zxc" target="_blank" rel="noopener" class="term-link">https://github.com/heil-hydrant/zxc</a></div>
+<div class="terminal-line">&bull; Vim Plugin: <a href="https://github.com/heil-hydrant/zxc.vim" target="_blank" rel="noopener" class="term-link">https://github.com/heil-hydrant/zxc.vim</a></div>
+"""
 +++
 
 Terminal based intercepting proxy written in rust with tmux and vim as user

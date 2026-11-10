@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}404 &middot; Command Not Found &middot; {{ config.title }}{% endblock title %}
+
+{% block content %}
+{% set tmux_sess = "main" %}
+{% set tmux_ver = "tmux 3.4" %}
+{% set term_pchar = "$" %}
+{% set term_sh = "zsh" %}
+
+{% if config.extra is defined %}
+    {% if config.extra.tmux is defined %}
+        {% if config.extra.tmux.session is defined %}{% set tmux_sess = config.extra.tmux.session %}{% endif %}
+        {% if config.extra.tmux.version is defined %}{% set tmux_ver = config.extra.tmux.version %}{% endif %}
+    {% endif %}
+    {% if config.extra.terminal is defined %}
+        {% if config.extra.terminal.prompt_char is defined %}{% set term_pchar = config.extra.terminal.prompt_char %}{% endif %}
+        {% if config.extra.terminal.shell is defined %}{% set term_sh = config.extra.terminal.shell %}{% endif %}
+    {% endif %}
+{% endif %}
+
+<section class="section-lg relative overflow-hidden text-center py-16">
+    <div class="glow-center"></div>
+    <div class="relative z-10 max-w-xl mx-auto px-6">
+        <div class="window border border-line-strong bg-panel text-left">
+            <div class="window-chrome tmux-statusline flex items-center justify-between">
+                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
+                    <span class="tmux-session">[{{ tmux_sess }}]</span>
+                    <span class="tmux-tab tmux-tab--active"><span class="tmux-tab-num">0:</span>curl* /404</span>
+                </div>
+                <div class="tmux-right flex items-center gap-2.5">
+                    <span class="tmux-meta text-muted hidden sm:inline">{{ tmux_ver }}</span>
+                </div>
+            </div>
+            <div class="p-8 font-mono text-xs">
+                <div class="text-accent mb-2">{{ term_pchar }} curl -I {{ current_url | default(value=config.base_url ~ '/404') }}</div>
+                <div class="text-error font-bold mb-4">HTTP/1.1 404 Not Found</div>
+                <div class="text-fg-2 mb-6">{{ term_sh }}: command not found: The route you requested does not exist or has been relocated.</div>
+                <div class="pt-4 border-t border-line flex items-center gap-4">
+                    <a href="{{ config.base_url }}" class="btn btn-accent">&larr; Return to Home Terminal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

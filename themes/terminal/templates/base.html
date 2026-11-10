@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="{{ config.default_language | default(value='en') }}" data-accent="{{ config.extra.accent_color | default(value='red') }}" class="accent-{{ config.extra.accent_color | default(value='red') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{{ config.description | default(value=config.title) }}{% endblock %}">
+    <title>{% block title %}{{ config.title }}{% endblock %}</title>
+    
+    <link rel="stylesheet" href="{{ get_url(path='main.css') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ get_url(path='favicon.svg') }}">
+    
+    {# Feeds #}
+    {% if config.generate_feeds %}
+        {% for feed in config.feed_filenames %}
+            {% if feed is containing(pat="atom") %}
+                <link rel="alternate" type="application/atom+xml" title="{{ config.title }} Atom Feed" href="{{ get_url(path=feed, trailing_slash=false) }}" />
+            {% endif %}
+            {% if feed is containing(pat="rss") %}
+                <link rel="alternate" type="application/rss+xml" title="{{ config.title }} RSS Feed" href="{{ get_url(path=feed, trailing_slash=false) }}" />
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {# Monospace & Sans Typography #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-bg text-fg {% block body_class %}{% endblock %}">
+    <div class="site-wrapper min-h-screen overflow-x-hidden bg-bg text-fg">
+        <div class="container min-h-screen flex flex-col">
+            {# ── Top Navigation ──────────────────────────────── #}
+            <nav class="nav">
+                <a href="{{ config.base_url }}" class="nav-logo">
+                    <span class="text-accent">▸</span> {{ config.extra.logo_text | default(value=config.title) }}
+                </a>
+                <div class="nav-links">
+                    <a href="{{ config.base_url }}" class="hover:text-accent">Terminal</a>
+                    {% if config.extra.menu_items %}
+                        {% for item in config.extra.menu_items %}
+                            <a href="{{ item.url | replace(from='$BASE_URL', to=config.base_url) }}" 
+                               {% if item.newtab %}target="_blank" rel="noopener"{% endif %}
+                               class="hover:text-accent">
+                                {{ item.name }}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <a href="{{ get_url(path='about') }}" class="hover:text-accent">About</a>
+                    {% endif %}
+                </div>
+            </nav>
+
+            {# ── Main Page Content ────────────────────────────── #}
+            <main class="flex-1 flex flex-col min-h-0">
+                {% block content %}{% endblock %}
+            </main>
+
+            {# ── Site Footer Telemetry Bar ────────────────────────── #}
+            <footer class="site-footer">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 text-xs font-mono">
+                    <div class="flex items-center gap-2 flex-wrap text-muted">
+                        <span class="size-1.5 rounded-full bg-good inline-block shadow-[0_0_6px_var(--good)]"></span>
+                        <span class="text-good font-semibold">online</span>
+                        <span>&middot;</span>
+                        {% set active_kernel = "" %}
+                        {% set active_sec = "" %}
+                        {% if config.extra is defined and config.extra.terminal is defined %}
+                            {% if config.extra.terminal.kernel is defined %}{% set active_kernel = config.extra.terminal.kernel %}{% endif %}
+                            {% if config.extra.terminal.security_status is defined %}{% set active_sec = config.extra.terminal.security_status %}{% endif %}
+                        {% endif %}
+                        {% if section is defined and section.extra is defined and section.extra.terminal is defined %}
+                            {% if section.extra.terminal.kernel is defined %}{% set active_kernel = section.extra.terminal.kernel %}{% endif %}
+                            {% if section.extra.terminal.security_status is defined %}{% set active_sec = section.extra.terminal.security_status %}{% endif %}
+                        {% endif %}
+                        {% if active_kernel %}
+                            <span>[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">{{ active_kernel }}</span>]</span>
+                        {% else %}
+                            <span>[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">6.12-generic</span>]</span>
+                        {% endif %}
+                        {% if active_sec %}
+                            <span>&middot;</span>
+                            <span>[<span class="text-accent font-semibold">{{ active_sec }}</span>]</span>
+                        {% endif %}
+                        <span>&middot;</span>
+                        <span>&copy; {{ now() | date(format='%Y') }} <span class="text-accent font-semibold">{{ config.extra.author | default(value=config.title) }}</span></span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-accent font-bold tracking-wide">{{ config.theme | default(value="terminal") }}</span>
+                        <span class="text-accent font-bold">::</span>
+                        <span class="text-fg-2">live terminal interactive</span>
+                        {% if config.generate_feeds %}
+                        <span class="text-accent">::</span>
+                        <a href="{{ get_url(path='atom.xml') }}" class="text-accent hover:underline">Atom</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    {# Restore saved accent theme #}
+    <script>
+        (function () {
+            var themes = ['red', 'green', 'blue', 'gold'];
+            var saved = localStorage.getItem('theme_accent');
+            if (saved && themes.indexOf(saved) !== -1) {
+                document.documentElement.setAttribute('data-accent', saved);
+                document.documentElement.className = 'accent-' + saved;
+            }
+        })();
+    </script>
+    <script src="{{ get_url(path='js/terminal.js') }}" defer></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

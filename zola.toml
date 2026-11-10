@@ -5,7 +5,7 @@ description = "OSCP certified cybersecurity researcher & systems enthusiast. Stu
 compile_sass = true
 build_search_index = true
 
-theme = "dtheme"
+theme = "terminal"
 
 generate_feeds = true
 feed_filenames = ["rss.xml", "atom.xml"]
@@ -22,14 +22,119 @@ theme = "github-dark"
 
 [extra]
 author = "darkseid"
+email = "ghost_vici@protonmail.com"
 logo_text = "darkseid's site"
 hero_title = "Code. Break. Automate."
 accent_color = "red"
 
 menu_items = [
     {name = "about me", url = "/about"},
-    {name = "github", url = "https://github.com/heil-hydrant", newtab = true},
+    {name = "github", url = "https://github.com/darkseid-is", newtab = true},
 ]
+
+# ── Terminal Interactive Shell Configuration ──────────────────────────────────
+[extra.terminal]
+user = "darkseid"
+host = "apokolips"
+shell = "zsh"
+prompt_char = "$"
+status = "OSCP Certified Security Researcher · Systems & Terminal Fu"
+welcome_tip = "Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'zxc'</span> to view project."
+
+banner = """  ██████╗  █████╗ ██████╗ ██╗  ██╗███████╗███████╗██╗██████╗ 
+  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝██╔════╝██╔════╝██║██╔══██╗
+  ██║  ██║███████║██████╔╝█████═╝ ███████╗█████╗  ██║██║  ██║
+  ██║  ██║██╔══██║██╔══██╗██╔═██╗ ╚════██║██╔══╝  ██║██║  ██║
+  ██████╔╝██║  ██║██║  ██║██║ ╚██╗███████║███████╗██║██████╔╝
+  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚═════╝"""
+
+whoami_bio = """<span class="term-good">darkseid</span> &middot; OSCP Certified Security Researcher &middot; Systems &amp; Low-Level Engineer
+Status:       <span class="term-good">Online &amp; Hacking</span>
+Specialties:  Offensive Security &middot; Terminal Ergonomics &middot; Reverse Engineering
+Primary:      Rust, Python, Bash, C/C++, VimScript
+Shell:        zsh 5.9 / tmux 3.4 / Neovim 0.10"""
+
+kernel = "Linux apokolips 6.12.0-hardened #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux"
+security_status = "SEC: OSCP-ACTIVE"
+quick_commands = ["help", "whoami", "ls", "theme", "clear"]
+
+# ── Tmux Window Manager & Static Panes ────────────────────────────────────────
+[extra.tmux]
+session = "apokolips"
+version = "tmux 3.4"
+
+[[extra.tmux.windows]]
+id = "zxc"
+name = "zxc"
+type = "page"
+page = "zxc.md"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 1:</span> <span class=\"text-fg\">zxc</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "target: <span class=\"text-accent font-semibold\">rust</span> &middot; <span class=\"text-accent font-semibold\">crates.io</span> &middot; <span class=\"text-accent font-semibold\">vim9</span>"
+actions = [
+    { label = "View Dedicated Page →", url = "/zxc/" }
+]
+
+[[extra.tmux.windows]]
+id = "about"
+name = "about"
+type = "page"
+page = "pages/about.md"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 2:</span> <span class=\"text-fg\">about</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "encoding: <span class=\"text-fg\">utf-8</span> &middot; mode: <span class=\"text-accent font-semibold\">static-view</span>"
+actions = [
+    { label = "View Dedicated Page →", url = "/about/" }
+]
+
+[[extra.tmux.windows]]
+id = "contact"
+name = "contact"
+type = "contact"
+footer_left = "[<span class=\"text-accent font-semibold\">Window 3:</span> <span class=\"text-fg\">contact</span>] [<span class=\"text-accent font-semibold\">RO</span>]"
+footer_right = "<span class=\"text-accent font-semibold\">protonmail</span> / <span class=\"text-good font-semibold\">direct</span>"
+
+# ── Contact & Social Channels ────────────────────────────────────────────────
+[extra.contact]
+email = "ghost_vici@protonmail.com"
+email_label = "SMTP"
+
+[[extra.contact.socials]]
+name = "reddit"
+url = "https://www.reddit.com/user/ghost_vici/"
+
+[[extra.contact.socials]]
+name = "x"
+url = "https://x.com/_darkseid_is_"
+
+# ── Virtual Filesystem (.profile, flag.txt, etc.) ─────────────────────────────
+[[extra.virtual_files]]
+name = ".profile"
+size = "240B"
+date = "Nov 03 2026"
+content = """export EDITOR="vim"
+export VISUAL="vim"
+export PAGER="less"
+export SHELL="/bin/zsh"
+export RUST_BACKTRACE="1"
+export ARCH="x86_64"
+alias proxy="zxc --port 8080"
+alias htb="open https://app.hackthebox.com/profile/256448\""""
+
+[[extra.virtual_files]]
+name = "flag.txt"
+size = "32B"
+date = "Nov 03 2026"
+content = "<span class=\"term-accent\">FLAG{d4rks31d_h0n3yc0mb_t3rm1n4l_2026}</span>"
+
+[[extra.virtual_files]]
+name = "mail.txt"
+size = "180B"
+date = "Nov 10 2026"
+content = """From: ghost_vici@protonmail.com
+To: darkseid@apokolips
+Subject: Encrypted Comms & Direct Dispatch
+
+Reach out directly at <span class="term-accent font-semibold">ghost_vici@protonmail.com</span>.
+Tip: Run <span class="term-accent">'contact'</span> to view all channels, or <span class="term-accent">'contact --copy'</span> to copy to clipboard."""
 
 [link_checker]
 skip_prefixes = [
