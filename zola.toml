@@ -38,6 +38,8 @@ user = "darkseid"
 host = "apokolips"
 shell = "zsh"
 prompt_char = "$"
+blur = "25%"
+darkness = "35%"
 status = "OSCP Certified Security Researcher · Systems & Terminal Fu"
 welcome_tip = "Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'zxc'</span> to view project."
 

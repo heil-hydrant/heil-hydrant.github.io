@@ -3,7 +3,8 @@
 {% block body_class %}page-terminal-app{% endblock %}
 
 {% block content %}
-{% set term = {} %}
+{% set cfg_term = {} %}
+{% set sec_term = {} %}
 {% set tmux_conf = {} %}
 {% set contact_conf = {} %}
 {% set virtual_files = [] %}
@@ -14,7 +15,7 @@
 {% if config.extra is defined %}
     {% if config.extra.author is defined %}{% set author_name = config.extra.author %}{% endif %}
     {% if config.extra.email is defined %}{% set site_email = config.extra.email %}{% endif %}
-    {% if config.extra.terminal is defined %}{% set term = config.extra.terminal %}{% endif %}
+    {% if config.extra.terminal is defined %}{% set cfg_term = config.extra.terminal %}{% endif %}
     {% if config.extra.tmux is defined %}{% set tmux_conf = config.extra.tmux %}{% endif %}
     {% if config.extra.contact is defined %}{% set contact_conf = config.extra.contact %}{% endif %}
     {% if config.extra.virtual_files is defined %}{% set virtual_files = config.extra.virtual_files %}{% endif %}
@@ -24,7 +25,7 @@
 {% if section is defined and section.extra is defined %}
     {% if section.extra.author is defined %}{% set author_name = section.extra.author %}{% endif %}
     {% if section.extra.email is defined %}{% set site_email = section.extra.email %}{% endif %}
-    {% if section.extra.terminal is defined %}{% set term = section.extra.terminal %}{% endif %}
+    {% if section.extra.terminal is defined %}{% set sec_term = section.extra.terminal %}{% endif %}
     {% if section.extra.tmux is defined %}{% set tmux_conf = section.extra.tmux %}{% endif %}
     {% if section.extra.contact is defined %}{% set contact_conf = section.extra.contact %}{% endif %}
     {% if section.extra.virtual_files is defined %}{% set virtual_files = section.extra.virtual_files %}{% endif %}
@@ -32,17 +33,47 @@
 
 {% set session_name = tmux_conf.session | default(value="main") %}
 {% set tmux_ver = tmux_conf.version | default(value="tmux 3.4") %}
-{% set shell_name = term.shell | default(value="zsh") %}
-{% set prompt_user = term.user | default(value=author_name) %}
-{% set prompt_host = term.host | default(value="localhost") %}
-{% set prompt_char = term.prompt_char | default(value="$") %}
+{% set shell_name = sec_term.shell | default(value=cfg_term.shell | default(value="zsh")) %}
+{% set prompt_user = sec_term.user | default(value=cfg_term.user | default(value=author_name)) %}
+{% set prompt_host = sec_term.host | default(value=cfg_term.host | default(value="localhost")) %}
+{% set prompt_char = sec_term.prompt_char | default(value=cfg_term.prompt_char | default(value="$")) %}
+{% set term_status = sec_term.status | default(value=cfg_term.status | default(value=config.description | default(value="Interactive Terminal Interface"))) %}
+{% set term_welcome = sec_term.welcome_tip | default(value=cfg_term.welcome_tip | default(value="Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'tmux'</span> to view windows.")) %}
+{% set term_banner = sec_term.banner | default(value=cfg_term.banner | default(value="")) %}
+{% set term_whoami = sec_term.whoami_bio | default(value=cfg_term.whoami_bio | default(value="")) %}
+{% set term_kernel = sec_term.kernel | default(value=cfg_term.kernel | default(value="Linux 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux")) %}
+{% set term_quick_commands = sec_term.quick_commands | default(value=cfg_term.quick_commands | default(value=[])) %}
+
+{# Resolve blur: respect config.extra.terminal.blur or config.extra.blur (from zola.toml / config.toml) #}
+{% set term_blur = "20%" %}
+{% if cfg_term.blur is defined and cfg_term.blur != "" %}
+    {% set term_blur = cfg_term.blur %}
+{% elif config.extra is defined and config.extra.blur is defined and config.extra.blur != "" %}
+    {% set term_blur = config.extra.blur %}
+{% elif sec_term.blur is defined and sec_term.blur != "" %}
+    {% set term_blur = sec_term.blur %}
+{% elif section is defined and section.extra is defined and section.extra.blur is defined and section.extra.blur != "" %}
+    {% set term_blur = section.extra.blur %}
+{% endif %}
+
+{# Resolve darkness: respect config.extra.terminal.darkness or config.extra.darkness (from zola.toml / config.toml) #}
+{% set term_darkness = "35%" %}
+{% if cfg_term.darkness is defined and cfg_term.darkness != "" %}
+    {% set term_darkness = cfg_term.darkness %}
+{% elif config.extra is defined and config.extra.darkness is defined and config.extra.darkness != "" %}
+    {% set term_darkness = config.extra.darkness %}
+{% elif sec_term.darkness is defined and sec_term.darkness != "" %}
+    {% set term_darkness = sec_term.darkness %}
+{% elif section is defined and section.extra is defined and section.extra.darkness is defined and section.extra.darkness != "" %}
+    {% set term_darkness = section.extra.darkness %}
+{% endif %}
 
 <section class="relative grid-bg overflow-hidden py-3 sm:py-4 flex-1 flex flex-col min-h-0">
     <div class="glow pointer-events-none"></div>
     <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 flex-1 flex flex-col min-h-0">
         
         {# ── Interactive Full Terminal Window ── #}
-        <div id="terminal-window" class="terminal-window terminal-window--hero window flex-1 flex flex-col min-h-0">
+        <div id="terminal-window" class="terminal-window terminal-window--hero terminal-window--focused window flex-1 flex flex-col min-h-0">
             {# Window Chrome Header: Tmux Statusline #}
             <div class="window-chrome tmux-statusline flex items-center justify-between">
                 <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
@@ -74,15 +105,15 @@
                 {# ── Window 0: Interactive Shell ── #}
                 <div id="tmux-pane-zsh" class="tmux-pane tmux-pane--active" data-pane="zsh">
                     <div id="terminal-output">
-                        <div class="terminal-line terminal-line--banner"><span class="term-accent">{% if term.banner %}{{ term.banner | safe }}{% else %}  _____ ___ ____  __  __ ___ _   _    _    _     
+                        <div class="terminal-line terminal-line--banner"><span class="term-accent">{% if term_banner %}{{ term_banner | safe }}{% else %}  _____ ___ ____  __  __ ___ _   _    _    _     
  |_   _| ____|  _ \|  \/  |_ _| \ | |  / \  | |    
    | | |  _| | |_) | |\/| || ||  \| | / _ \ | |    
    | | | |___|  _ <| |  | || || |\  |/ ___ \| |___ 
    |_| |_____|_| \_\_|  |_|___|_| \_/_/   \_\_____|{% endif %}</span></div>
                         <div class="terminal-line">&nbsp;</div>
                         <div class="terminal-line"><span class="term-good">Session:</span> <span class="prompt-user">{{ prompt_user }}</span><span class="term-muted">@</span><span class="prompt-host">{{ prompt_host }}</span> ({{ session_name }})
-<span class="term-good">Status:</span>  {{ term.status | default(value=config.description | default(value="Interactive Terminal Interface")) }}
-{{ term.welcome_tip | default(value="Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'tmux'</span> to view windows.") | safe }}</div>
+<span class="term-good">Status:</span>  {{ term_status }}
+{{ term_welcome | safe }}</div>
                         <div class="terminal-line">&nbsp;</div>
                     </div>
                     <div class="terminal-input-line"><span class="terminal-prompt"><span class="prompt-user">{{ prompt_user }}</span><span class="prompt-at">@</span><span class="prompt-host">{{ prompt_host }}</span><span class="prompt-colon">:</span><span class="prompt-path">~</span><span class="prompt-char">{{ prompt_char }}</span></span><span id="terminal-input-display" class="terminal-input-display"></span><span class="terminal-cursor"></span><input type="text" id="terminal-input" class="terminal-hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus /></div>
@@ -161,8 +192,8 @@
             {# Terminal Quick-Action Hints Strip #}
             <div class="terminal-hints">
                 <span class="terminal-hints-label text-xs font-mono">Quick commands:</span>
-                {% if term.quick_commands %}
-                    {% for qcmd in term.quick_commands %}
+                {% if term_quick_commands %}
+                    {% for qcmd in term_quick_commands %}
                         <button type="button" class="terminal-hint-chip" data-term-cmd="{{ qcmd }}">{{ qcmd }}</button>
                     {% endfor %}
                 {% else %}
@@ -191,11 +222,13 @@
         tmux_version: {{ tmux_ver | json_encode | safe }},
         shell: {{ shell_name | json_encode | safe }},
         prompt_char: {{ prompt_char | json_encode | safe }},
-        status: {{ term.status | default(value="") | json_encode | safe }},
-        welcome_tip: {{ term.welcome_tip | default(value="") | json_encode | safe }},
-        banner: {{ term.banner | default(value="") | json_encode | safe }},
-        whoami_bio: {{ term.whoami_bio | default(value="") | json_encode | safe }},
-        kernel: {{ term.kernel | default(value="Linux 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux") | json_encode | safe }},
+        status: {{ term_status | json_encode | safe }},
+        welcome_tip: {{ term_welcome | json_encode | safe }},
+        banner: {{ term_banner | json_encode | safe }},
+        whoami_bio: {{ term_whoami | json_encode | safe }},
+        kernel: {{ term_kernel | json_encode | safe }},
+        blur: {{ term_blur | json_encode | safe }},
+        darkness: {{ term_darkness | json_encode | safe }},
 
         contact: {
             email: {{ contact_conf.email | default(value=site_email) | json_encode | safe }},

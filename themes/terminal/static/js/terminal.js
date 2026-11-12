@@ -16,10 +16,110 @@
 
     if (!termWindow || !termBody || !hiddenInput) return;
 
+    // Dynamic Site & Terminal Configuration
+    const siteData = window.__TERMINAL_DATA__ || {
+      author: 'user',
+      title: 'Terminal',
+      desc: 'Interactive Terminal Interface',
+      user: 'user',
+      host: 'terminal',
+      session: 'session',
+      shell: 'zsh',
+      prompt_char: '$',
+      blur: '20%',
+      darkness: '35%',
+      status: 'Online',
+      welcome_tip: "Type <span class=\"term-accent\">'help'</span> for manual.",
+      banner: '',
+      whoami_bio: '',
+      kernel: 'Linux terminal 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux',
+      tmux_version: 'tmux 3.4',
+      contact: {
+        email: '',
+        email_label: 'Email',
+        socials: []
+      },
+      windows: [
+        { id: 'zsh', name: 'zsh', type: 'shell' }
+      ],
+      virtual_files: [],
+      posts: []
+    };
+
+    // Parse and apply configured blur & darkness for frosted glass when focused
+    function applyGlassConfig() {
+      const b = siteData.blur;
+      const d = siteData.darkness;
+      if (b !== undefined && b !== null && b !== '') {
+        let blurPx = '10px';
+        if (typeof b === 'number') {
+          if (b === 0) {
+            blurPx = '0px';
+          } else if (b <= 1) {
+            blurPx = Math.round(b * 50) + 'px';
+          } else if (b <= 100) {
+            blurPx = Math.round(b * 0.5) + 'px';
+          } else {
+            blurPx = b + 'px';
+          }
+        } else if (typeof b === 'string') {
+          const str = b.trim().toLowerCase();
+          if (str === 'none' || str === 'off' || str === '0' || str === '0%' || str === '0px') {
+            blurPx = '0px';
+          } else if (str.endsWith('%')) {
+            const pct = parseFloat(str);
+            blurPx = Math.round(pct * 0.5) + 'px'; // 20% -> 10px, 100% -> 50px
+          } else if (str.endsWith('px')) {
+            blurPx = str;
+          } else {
+            const num = parseFloat(str);
+            if (!isNaN(num)) {
+              if (num === 0) blurPx = '0px';
+              else if (num <= 1) blurPx = Math.round(num * 50) + 'px';
+              else if (num <= 100) blurPx = Math.round(num * 0.5) + 'px';
+              else blurPx = num + 'px';
+            } else {
+              blurPx = str;
+            }
+          }
+        }
+        document.documentElement.style.setProperty('--terminal-blur', blurPx);
+        if (blurPx === '0px' || blurPx === '0') {
+          document.documentElement.style.setProperty('--terminal-backdrop-filter', 'none');
+        } else {
+          document.documentElement.style.setProperty('--terminal-backdrop-filter', `blur(${blurPx}) saturate(180%)`);
+        }
+      }
+
+      if (d !== undefined && d !== null && d !== '') {
+        let alpha = 0.35;
+        if (typeof d === 'number') {
+          alpha = d <= 1 ? d : (d / 100);
+        } else if (typeof d === 'string') {
+          const str = d.trim().toLowerCase();
+          const num = parseFloat(str);
+          if (!isNaN(num)) {
+            alpha = str.endsWith('%') || num > 1 ? (num / 100) : num;
+          }
+        }
+        alpha = Math.max(0, Math.min(1, alpha));
+        document.documentElement.style.setProperty('--terminal-bg-alpha', alpha.toString());
+      }
+    }
+    applyGlassConfig();
+
     function setTerminalFocus(focused) {
-      if (focused && currentTmuxWindow === 'zsh') {
-        if (hiddenInput && document.activeElement !== hiddenInput) {
-          hiddenInput.focus({ preventScroll: true });
+      if (focused) {
+        termWindow.classList.add('terminal-window--focused');
+        if (currentTmuxWindow === 'zsh') {
+          if (hiddenInput && document.activeElement !== hiddenInput) {
+            hiddenInput.focus({ preventScroll: true });
+          }
+        }
+      } else {
+        termWindow.classList.remove('terminal-window--focused');
+        if (document.activeElement && termWindow.contains(document.activeElement)) {
+          document.activeElement.blur();
         }
       }
     }
@@ -57,33 +157,6 @@
       return parts.join(', ');
     }
 
-    // Dynamic Site & Terminal Configuration
-    const siteData = window.__TERMINAL_DATA__ || {
-      author: 'user',
-      title: 'Terminal',
-      desc: 'Interactive Terminal Interface',
-      user: 'user',
-      host: 'terminal',
-      session: 'session',
-      shell: 'zsh',
-      prompt_char: '$',
-      status: 'Online',
-      welcome_tip: "Type <span class=\"term-accent\">'help'</span> for manual.",
-      banner: '',
-      whoami_bio: '',
-      kernel: 'Linux terminal 6.12.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux',
-      tmux_version: 'tmux 3.4',
-      contact: {
-        email: '',
-        email_label: 'Email',
-        socials: []
-      },
-      windows: [
-        { id: 'zsh', name: 'zsh', type: 'shell' }
-      ],
-      virtual_files: [],
-      posts: []
-    };
 
     // Virtual Filesystem
     const files = {};
@@ -1075,6 +1148,23 @@ ${welcomeTip}\n`;
       } catch (err) {}
 
       setTerminalFocus(true);
+    });
+
+    // Window focus & blur management: Frosted glass when focused, opaque black when unfocused
+    document.addEventListener('pointerdown', (e) => {
+      if (!termWindow.contains(e.target)) {
+        setTerminalFocus(false);
+      } else {
+        setTerminalFocus(true);
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      setTerminalFocus(true);
+    });
+
+    window.addEventListener('blur', () => {
+      setTerminalFocus(false);
     });
 
     // Allow mousewheel scrolling anywhere over the terminal window (chrome, hints, body)

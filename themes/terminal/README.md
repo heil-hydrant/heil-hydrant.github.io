@@ -22,7 +22,8 @@
   - Red (`#ff0000`), Green (`#00ff00`), Blue (`#0000FF`), and Gold (`#ffd700`).
   - Switchable at runtime via the `theme <color>` command or the top titlebar chip, persisted in `localStorage`.
 - **Cybernetic Visuals & Effects**:
-  - High-contrast solid black terminal chrome with active window state indicators (`*`).
+  - Adaptive frosted black glass terminal chrome with configurable `blur` and `darkness` when focused, switching to solid opaque black when unfocused.
+  - Active window state indicators (`*`).
   - Dedicated article reader view with clean syntax highlighting and collapsible sidebars.
 
 ---
@@ -67,7 +68,7 @@ zola serve
 
 ### Terminal & Shell Settings (`[extra.terminal]`)
 
-Customize the interactive shell prompt, operator identity, banner, and quick action chips:
+Customize the interactive shell prompt, operator identity, frosted glass options, banner, and quick action chips:
 
 ```toml
 [extra.terminal]
@@ -75,6 +76,8 @@ user = "operator"
 host = "workstation"
 shell = "zsh"
 prompt_char = "$"
+blur = "20%"                                      # Frosted glass blur (e.g. "20%" or "10px")
+darkness = "35%"                                  # Frosted glass background darkness/opacity (e.g. "35%" or "0.35")
 status = "Online · Systems Engineer"
 welcome_tip = "Type <span class=\"term-accent\">'help'</span> for manual."
 
@@ -95,6 +98,17 @@ kernel = "Linux workstation 6.12.0-generic #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Lin
 security_status = "SEC: ENCRYPTED"
 quick_commands = ["help", "whoami", "projects", "about", "ls", "contact", "theme", "clear"]
 ```
+
+#### Frosted Glass Window Focus Behavior
+
+The terminal window features an adaptive frosted glass aesthetic:
+- **Focused State**: When the terminal window is focused, it renders frosted black glass with configurable blur radius/percentage (`blur`) and background darkness (`darkness`).
+- **Unfocused State**: When unfocused, it becomes completely opaque solid black with blur disabled for zero background distraction and maximum contrast.
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `blur` | String / Number | `"20%"` | Frosted glass backdrop blur radius/percentage when focused (e.g. `"20%"` or `"10px"`). |
+| `darkness` | String / Number | `"35%"` | Frosted glass background opacity/darkness level when focused (e.g. `"35%"` or `"0.35"`). |
 
 ---
 

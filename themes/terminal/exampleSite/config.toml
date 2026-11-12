@@ -25,6 +25,8 @@ user = "operator"
 host = "workstation"
 shell = "zsh"
 prompt_char = "$"
+blur = "20%"
+darkness = "35%"
 status = "Online · Cybernetic Systems Operator"
 welcome_tip = "Type <span class=\"term-accent\">'help'</span> to inspect manual or <span class=\"term-accent\">'projects'</span> to view work."
 whoami_bio = """<span class="term-good">operator</span> &middot; Systems &amp; Low-Level Engineer
