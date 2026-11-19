@@ -1357,9 +1357,12 @@ ${welcomeTip}\n`;
       }
     } catch (e) {}
 
-    // Auto-focus input on page load
+    // Auto-focus input on page load (only on desktop devices)
     setTimeout(() => {
-      setTerminalFocus(true);
+      const isTouch = window.matchMedia('(pointer: coarse)').matches;
+      if (!isTouch) {
+        setTerminalFocus(true);
+      }
     }, 100);
   }
 
