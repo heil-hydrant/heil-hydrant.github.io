@@ -1,6 +1,6 @@
 {% component callout() -%}
-<div class="p-4 my-4 border border-line bg-surface-2 rounded flex items-start gap-3">
-    <span class="text-accent font-mono">▸</span>
-    <div class="text-sm text-fg-2">{{ body | safe }}</div>
+<div class="p-3 sm:p-4 my-4 border border-line bg-surface-2 rounded flex items-start gap-2.5 sm:gap-3 max-w-full overflow-hidden">
+    <span class="text-accent font-mono flex-shrink-0">▸</span>
+    <div class="text-sm text-fg-2 min-w-0 flex-1 break-words">{{ body | safe }}</div>
 </div>
 {%- endcomponent callout %}

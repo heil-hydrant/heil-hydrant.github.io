@@ -28,28 +28,28 @@
         <article class="window border border-line-strong bg-panel shadow-2xl">
             {# Window Chrome Header: Tmux Statusline #}
             <div class="window-chrome tmux-statusline flex items-center justify-between">
-                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
-                    <span class="tmux-session">[{{ tmux_sess }}]</span>
-                    <span class="tmux-tab tmux-tab--active"><span class="tmux-tab-num">0:</span>{{ term_editor }}* ~/{{ page.slug | default(value="post") }}.md</span>
+                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto min-w-0">
+                    <span class="tmux-session shrink-0">[{{ tmux_sess }}]</span>
+                    <span class="tmux-tab tmux-tab--active whitespace-nowrap"><span class="tmux-tab-num">0:</span>{{ term_editor }}* ~/{{ page.slug | default(value="post") }}.md</span>
                 </div>
-                <div class="tmux-right flex items-center gap-2.5">
+                <div class="tmux-right flex items-center gap-2.5 shrink-0">
                     <span class="tmux-meta text-muted hidden sm:inline">{{ tmux_ver }}</span>
                     <span class="text-line-strong hidden sm:inline">│</span>
-                    <a href="{{ config.base_url }}" class="terminal-action-btn tmux-btn font-mono text-xs">
+                    <a href="{{ config.base_url }}" class="terminal-action-btn tmux-btn font-mono text-xs px-2.5 py-1 min-h-[28px] inline-flex items-center touch-manipulation">
                         &larr; Return
                     </a>
                 </div>
             </div>
 
             {# Terminal Body Containing the Article #}
-            <div class="p-6 sm:p-10">
+            <div class="p-4 sm:p-8 lg:p-10">
                 <header class="mb-8 pb-8 border-b border-line">
                     <div class="flex items-center gap-2 text-xs font-mono text-accent mb-3">
                         <span>{{ term_pchar }}</span>
                         <span>cat ~/{{ page.slug | default(value="post") }}.md</span>
                     </div>
 
-                    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-fg mb-4">
+                    <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-fg mb-3 sm:mb-4">
                         {{ page.title }}
                     </h1>
 
@@ -90,12 +90,12 @@
                     <div>
                         <a href="{{ config.base_url }}" class="btn btn-accent">&larr; Return to Home Terminal</a>
                     </div>
-                    <div class="flex items-center gap-4 text-muted">
+                    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-muted w-full sm:w-auto text-center sm:text-right">
                         {% if page.lower %}
-                        <a href="{{ page.lower.permalink }}" class="hover:text-accent">&larr; {{ page.lower.title }}</a>
+                        <a href="{{ page.lower.permalink }}" class="hover:text-accent py-1">&larr; {{ page.lower.title }}</a>
                         {% endif %}
                         {% if page.higher %}
-                        <a href="{{ page.higher.permalink }}" class="hover:text-accent">{{ page.higher.title }} &rarr;</a>
+                        <a href="{{ page.higher.permalink }}" class="hover:text-accent py-1">{{ page.higher.title }} &rarr;</a>
                         {% endif %}
                     </div>
                 </div>

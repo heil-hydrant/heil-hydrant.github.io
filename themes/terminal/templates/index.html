@@ -68,15 +68,15 @@
     {% set term_darkness = section.extra.darkness %}
 {% endif %}
 
-<section class="relative grid-bg overflow-hidden py-3 sm:py-4 flex-1 flex flex-col min-h-0">
+<section class="relative grid-bg overflow-hidden py-1.5 sm:py-3 md:py-4 flex-1 flex flex-col min-h-0">
     <div class="glow pointer-events-none"></div>
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 flex-1 flex flex-col min-h-0">
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-2 sm:px-4 md:px-6 flex-1 flex flex-col min-h-0">
         
         {# ── Interactive Full Terminal Window ── #}
         <div id="terminal-window" class="terminal-window terminal-window--hero terminal-window--focused window flex-1 flex flex-col min-h-0">
             {# Window Chrome Header: Tmux Statusline #}
             <div class="window-chrome tmux-statusline flex items-center justify-between">
-                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto">
+                <div class="tmux-left flex items-center gap-1.5 overflow-x-auto min-w-0">
                     <span class="tmux-session">[{{ session_name }}]</span>
                     {# Window 0: Shell Tab #}
                     <button type="button" class="tmux-tab tmux-tab--active" data-tmux-cmd="clear" data-tab-name="zsh"><span class="tmux-tab-num">0:</span><span class="tmux-tab-label">{{ shell_name }}*</span></button>
@@ -88,12 +88,15 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="tmux-right flex items-center gap-2.5">
+                <div class="tmux-right flex items-center gap-2.5 shrink-0">
                     <span class="tmux-meta text-muted hidden sm:inline">{{ tmux_conf.version | default(value="tmux 3.4") }}</span>
                     <span class="text-line-strong hidden sm:inline">│</span>
                     <div class="terminal-actions flex items-center gap-1.5">
                         <button id="term-clear-btn" type="button" class="terminal-action-btn tmux-btn" title="Clear terminal screen (Ctrl+L)">Clear</button>
-                        <button id="term-fullscreen-btn" type="button" class="terminal-action-btn tmux-btn" title="Toggle Fullscreen mode">Fullscreen</button>
+                        <button id="term-fullscreen-btn" type="button" class="terminal-action-btn tmux-btn" title="Toggle Fullscreen mode" aria-label="Toggle Fullscreen mode">
+                            <span class="hidden sm:inline">Fullscreen</span>
+                            <span class="sm:hidden text-xs">⛶</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -138,11 +141,15 @@
                                     <div class="terminal-line">&nbsp;</div>
                                     {% if email_val %}
                                         <div class="terminal-line"><span class="term-heading">[{{ email_lbl }}]</span></div>
-                                        <div class="terminal-line flex items-center gap-2">
-                                            <span>&bull;</span>
-                                            <span class="term-accent font-semibold select-all">{{ email_val }}</span>
-                                            <button type="button" class="terminal-action-btn term-copy-btn tmux-btn inline-flex items-center gap-1 px-2 py-0.5 text-xs border border-accent-dim rounded bg-white/5 hover:bg-white/10 text-fg ml-2" data-copy="{{ email_val }}">[📋 Copy]</button>
-                                            <a href="mailto:{{ email_val }}" class="terminal-action-btn tmux-btn inline-flex items-center gap-1 px-2 py-0.5 text-xs border border-accent-dim rounded bg-white/5 hover:bg-white/10 text-fg">[✉️ Send Mail]</a>
+                                        <div class="terminal-line flex flex-wrap items-center gap-2">
+                                            <span class="flex items-center gap-1 min-w-0">
+                                                <span>&bull;</span>
+                                                <span class="term-accent font-semibold select-all break-all">{{ email_val }}</span>
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 flex-wrap">
+                                                <button type="button" class="terminal-action-btn term-copy-btn tmux-btn inline-flex items-center justify-center gap-1 px-2.5 py-1 text-xs border border-accent-dim rounded bg-white/5 hover:bg-white/10 active:bg-white/20 text-fg min-h-[30px] touch-manipulation" data-copy="{{ email_val }}">[📋 Copy]</button>
+                                                <a href="mailto:{{ email_val }}" class="terminal-action-btn tmux-btn inline-flex items-center justify-center gap-1 px-2.5 py-1 text-xs border border-accent-dim rounded bg-white/5 hover:bg-white/10 active:bg-white/20 text-fg min-h-[30px] touch-manipulation">[✉️ Send Mail]</a>
+                                            </span>
                                         </div>
                                     {% endif %}
                                     {% if contact_conf.socials %}
@@ -191,7 +198,10 @@
 
             {# Terminal Quick-Action Hints Strip #}
             <div class="terminal-hints">
-                <span class="terminal-hints-label text-xs font-mono">Quick commands:</span>
+                <span class="terminal-hints-label text-xs font-mono shrink-0">
+                    <span class="hidden sm:inline">Quick commands:</span>
+                    <span class="sm:hidden">Quick:</span>
+                </span>
                 {% if term_quick_commands %}
                     {% for qcmd in term_quick_commands %}
                         <button type="button" class="terminal-hint-chip" data-term-cmd="{{ qcmd }}">{{ qcmd }}</button>

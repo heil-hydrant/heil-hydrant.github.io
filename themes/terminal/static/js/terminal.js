@@ -155,12 +155,15 @@
     }
     applyGlassConfig();
 
-    function setTerminalFocus(focused) {
+    function setTerminalFocus(focused, allowVirtualKeyboard = true) {
       if (focused) {
         termWindow.classList.add('terminal-window--focused');
+        const isTouch = window.matchMedia('(pointer: coarse)').matches;
         if (currentTmuxWindow === 'zsh') {
-          if (hiddenInput && document.activeElement !== hiddenInput) {
-            hiddenInput.focus({ preventScroll: true });
+          if (!isTouch || allowVirtualKeyboard) {
+            if (hiddenInput && document.activeElement !== hiddenInput) {
+              hiddenInput.focus({ preventScroll: true });
+            }
           }
         }
       } else {
@@ -169,6 +172,20 @@
           document.activeElement.blur();
         }
       }
+    }
+
+    // Dynamic Visual Viewport support for mobile soft keyboards & toolbar retraction
+    if (window.visualViewport) {
+      const onViewportChange = () => {
+        const vh = window.visualViewport.height;
+        document.documentElement.style.setProperty('--visual-viewport-height', `${vh}px`);
+        if (document.activeElement === hiddenInput && termBody) {
+          termBody.scrollTop = termBody.scrollHeight;
+        }
+      };
+      window.visualViewport.addEventListener('resize', onViewportChange);
+      window.visualViewport.addEventListener('scroll', onViewportChange);
+      onViewportChange();
     }
 
     // Command History
@@ -372,7 +389,7 @@
       switchTmuxWindow(TMUX_WINDOWS[nextIndex]);
     }
 
-    function switchTmuxWindow(targetWindow) {
+    function switchTmuxWindow(targetWindow, allowVirtualKeyboard = false) {
       if (!targetWindow) return false;
       const target = normalizeWindowName(targetWindow);
 
@@ -415,6 +432,12 @@
           const clean = labelSpan.textContent.replace(/\*+$/, '').trim();
           labelSpan.textContent = isTarget ? (clean + '*') : clean;
         }
+
+        if (isTarget && typeof tab.scrollIntoView === 'function') {
+          try {
+            tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+          } catch (e) {}
+        }
       });
 
       // 3. Scroll & focus management
@@ -422,7 +445,7 @@
         if (termBody) {
           termBody.scrollTop = termBody.scrollHeight;
         }
-        setTerminalFocus(true);
+        setTerminalFocus(true, allowVirtualKeyboard);
       } else {
         if (termBody) {
           termBody.scrollTop = 0;
@@ -481,7 +504,7 @@
   <div class="term-tr"><div class="term-td term-accent">sudo &lt;cmd&gt;</div><div class="term-td">Attempt privilege escalation</div></div>`;
 
           return `<span class="term-heading" style="display: inline-block; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; margin-bottom: 6px;">AVAILABLE COMMANDS &amp; MANUAL</span>
-<div class="term-table">
+<div class="term-table term-table--help">
 ${rows}
 </div>
 <span class="term-muted">Tip: Press [Tab] to autocomplete commands or filenames. Use [↑] / [↓] for history.</span>`;
@@ -582,14 +605,14 @@ ${rows}
           const currentFiles = (currentDir === '~/articles' || isArticlesArg) ? articleFiles : files;
 
           if (isLong) {
-            let out = `<div class="term-table"><div class="term-tr term-muted"><div class="term-td">Permissions</div><div class="term-td">User</div><div class="term-td">Size</div><div class="term-td">Date</div><div class="term-td">Name</div></div>`;
+            let out = `<div class="term-table--ls"><div class="term-table"><div class="term-tr term-muted"><div class="term-td">Permissions</div><div class="term-td">User</div><div class="term-td">Size</div><div class="term-td">Date</div><div class="term-td">Name</div></div>`;
             Object.keys(currentFiles).forEach((name) => {
               const f = currentFiles[name];
               const perm = f.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
               const nameClass = f.type === 'dir' ? 'term-good' : (name.startsWith('flag') ? 'term-warn' : 'term-fg');
               out += `<div class="term-tr"><div class="term-td term-muted">${perm}</div><div class="term-td">${usr}</div><div class="term-td term-muted">${f.size}</div><div class="term-td term-muted">${f.date}</div><div class="term-td ${nameClass}">${name}${f.type === 'dir' ? '/' : ''}</div></div>`;
             });
-            out += `</div>`;
+            out += `</div></div>`;
             return out;
           }
 
@@ -1242,7 +1265,7 @@ ${welcomeTip}\n`;
             copyBtn.style.color = '';
           }, 2000);
         }
-        setTerminalFocus(true);
+        setTerminalFocus(true, false);
         return;
       }
 
@@ -1253,7 +1276,7 @@ ${welcomeTip}\n`;
         e.stopPropagation();
         const cmd = termCmdEl.getAttribute('data-term-cmd');
         if (cmd) executeCommand(cmd);
-        setTerminalFocus(true);
+        setTerminalFocus(true, false);
         return;
       }
 
@@ -1266,7 +1289,14 @@ ${welcomeTip}\n`;
         if (sel && sel.toString().length > 0) return;
       } catch (err) {}
 
-      setTerminalFocus(true);
+      // Direct click on input line grants virtual keyboard focus
+      const clickedInputRow = e.target.closest('.terminal-input-line');
+      if (clickedInputRow) {
+        setTerminalFocus(true, true);
+        return;
+      }
+
+      setTerminalFocus(true, false);
     });
 
     // Window focus & blur management: Frosted glass when focused, opaque black when unfocused
@@ -1274,12 +1304,12 @@ ${welcomeTip}\n`;
       if (!termWindow.contains(e.target)) {
         setTerminalFocus(false);
       } else {
-        setTerminalFocus(true);
+        setTerminalFocus(true, false);
       }
     });
 
     window.addEventListener('focus', () => {
-      setTerminalFocus(true);
+      setTerminalFocus(true, false);
     });
 
     window.addEventListener('blur', () => {
@@ -1297,8 +1327,10 @@ ${welcomeTip}\n`;
       fullscreenBtn.addEventListener('click', () => {
         termWindow.classList.toggle('terminal-window--fullscreen');
         const isFull = termWindow.classList.contains('terminal-window--fullscreen');
-        fullscreenBtn.textContent = isFull ? 'Exit [Esc]' : 'Fullscreen';
-        setTerminalFocus(true);
+        fullscreenBtn.innerHTML = isFull
+          ? '<span class="hidden sm:inline">Exit [Esc]</span><span class="sm:hidden text-xs">✕</span>'
+          : '<span class="hidden sm:inline">Fullscreen</span><span class="sm:hidden text-xs">⛶</span>';
+        setTerminalFocus(true, false);
       });
     }
 
@@ -1404,9 +1436,9 @@ ${welcomeTip}\n`;
 
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
-        switchTmuxWindow('zsh');
+        switchTmuxWindow('zsh', false);
         commands.clear.run();
-        setTerminalFocus(true);
+        setTerminalFocus(true, false);
       });
     }
 
@@ -1433,11 +1465,11 @@ ${welcomeTip}\n`;
         } else if (lowerCmd === 'clear' || lowerCmd === 'cls') {
           switchTmuxWindow('zsh');
           commands.clear.run();
-          setTerminalFocus(true);
+          setTerminalFocus(true, false);
         } else {
           switchTmuxWindow('zsh');
           executeCommand(cmd);
-          setTerminalFocus(true);
+          setTerminalFocus(true, false);
         }
       });
     });

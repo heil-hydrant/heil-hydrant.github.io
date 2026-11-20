@@ -3,10 +3,10 @@
 {% block title %}All {{ taxonomy.name | default(value="Tags") | capitalize }} &middot; {{ config.title }}{% endblock title %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
     <div class="mb-8 pb-8 border-b border-line">
-        <a href="{{ config.base_url }}" class="text-xs text-muted font-mono hover:text-accent">&larr; Back to Home</a>
-        <h1 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">
+        <a href="{{ config.base_url }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-line bg-surface-2 hover:border-accent text-xs text-muted font-mono hover:text-accent transition">&larr; Back to Home</a>
+        <h1 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">
             All {{ taxonomy.name | default(value="Tags") | capitalize }}
         </h1>
         <p class="text-sm text-fg-2">Browse content grouped by technology and topic.</p>

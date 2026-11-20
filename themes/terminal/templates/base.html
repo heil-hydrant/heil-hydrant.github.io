@@ -2,7 +2,7 @@
 <html lang="{{ config.default_language | default(value='en') }}" data-accent="{{ config.extra.accent_color | default(value='red') }}" class="accent-{{ config.extra.accent_color | default(value='red') }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="{% block description %}{{ config.description | default(value=config.title) }}{% endblock %}">
     <title>{% block title %}{{ config.title }}{% endblock %}</title>
     
@@ -59,7 +59,7 @@
 
             {# ── Site Footer Telemetry Bar ────────────────────────── #}
             <footer class="site-footer">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4 text-xs font-mono">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-4 text-xs font-mono">
                     <div class="flex items-center gap-2 flex-wrap text-muted">
                         <span class="size-1.5 rounded-full bg-good inline-block shadow-[0_0_6px_var(--good)]"></span>
                         <span class="text-good font-semibold">online</span>
@@ -75,7 +75,8 @@
                             {% if section.extra.terminal.security_status is defined %}{% set active_sec = section.extra.terminal.security_status %}{% endif %}
                         {% endif %}
                         {% if active_kernel %}
-                            <span>[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">{{ active_kernel }}</span>]</span>
+                            <span class="hidden sm:inline">[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">{{ active_kernel }}</span>]</span>
+                            <span class="sm:hidden">[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">Linux 6.12</span>]</span>
                         {% else %}
                             <span>[<span class="text-accent font-semibold">KERNEL:</span> <span class="text-fg-2">6.12-generic</span>]</span>
                         {% endif %}
@@ -89,7 +90,8 @@
                     <div class="flex items-center gap-3">
                         <span class="text-accent font-bold tracking-wide">{{ config.theme | default(value="terminal") }}</span>
                         <span class="text-accent font-bold">::</span>
-                        <span class="text-fg-2">live terminal interactive</span>
+                        <span class="text-fg-2 hidden sm:inline">live terminal interactive</span>
+                        <span class="text-fg-2 sm:hidden">interactive</span>
                         {% if config.generate_feeds and config.feed_filenames %}
                             {% for feed in config.feed_filenames %}
                                 <span class="text-accent">::</span>

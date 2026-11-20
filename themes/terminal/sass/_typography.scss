@@ -237,6 +237,78 @@ p, li {
     font-style: italic;
   }
 
+  // ── Code blocks & inline code inside markdown prose ──
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: #0d1117;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin: 1.5rem 0;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+
+    @media (max-width: 640px) {
+      padding: 10px 12px;
+      font-size: 11.5px;
+      border-radius: var(--radius-sm);
+    }
+
+    code {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: inherit !important;
+      white-space: pre;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+  }
+
+  code:not(pre code) {
+    background-color: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 2px 5px;
+    font-size: 0.875em;
+    font-family: var(--font-mono);
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  // ── Tables inside markdown prose ──
+  table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+    border: 1px solid var(--line);
+    margin: 1.5rem 0;
+    font-size: 13px;
+
+    th, td {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+  }
+
   hr {
     border: none;
     border-top: 1px solid var(--line);

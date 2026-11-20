@@ -3,11 +3,11 @@
 {% block title %}#{{ term.name }} &middot; {{ config.title }}{% endblock title %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
     <div class="mb-8 pb-8 border-b border-line">
         {% set tax = get_taxonomy(kind=taxonomy.name) %}
-        <a href="{{ tax.permalink }}" class="text-xs text-muted font-mono hover:text-accent">&larr; All {{ taxonomy.name | capitalize }}</a>
-        <h1 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">{{ taxonomy.name | capitalize }}: <span class="text-accent">#{{ term.name }}</span></h1>
+        <a href="{{ tax.permalink }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-line bg-surface-2 hover:border-accent text-xs text-muted font-mono hover:text-accent transition">&larr; All {{ taxonomy.name | capitalize }}</a>
+        <h1 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-fg mt-4 mb-2">{{ taxonomy.name | capitalize }}: <span class="text-accent">#{{ term.name }}</span></h1>
         <p class="text-sm text-fg-2">{{ term.pages | length }} post(s) found</p>
     </div>
 
@@ -20,8 +20,8 @@
                 <span class="text-xs text-muted font-mono">{{ page.reading_time }} min read</span>
                 {% endif %}
             </div>
-            <div class="p-6 flex flex-col gap-3">
-                <h3 class="font-display text-2xl font-bold text-fg hover:text-accent transition">
+            <div class="p-4 sm:p-6 flex flex-col gap-3">
+                <h3 class="font-display text-xl sm:text-2xl font-bold text-fg hover:text-accent transition">
                     <a href="{{ page.permalink }}">{{ page.title }}</a>
                 </h3>
 
@@ -39,7 +39,7 @@
                             {% endfor %}
                         {% endif %}
                     </div>
-                    <a href="{{ page.permalink }}" class="text-xs font-mono text-accent hover:underline">
+                    <a href="{{ page.permalink }}" class="text-xs font-mono text-accent hover:underline py-1 px-2 -mr-2 min-h-[28px] inline-flex items-center">
                         Read post &rarr;
                     </a>
                 </div>
