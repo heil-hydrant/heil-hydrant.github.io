@@ -158,8 +158,17 @@
     }
 
 
-    // Virtual Filesystem
-    const files = {};
+    // Virtual Filesystem & Directory State
+    let currentDir = '~';
+    const files = Object.create(null);
+    const articleFiles = Object.create(null);
+
+    function updatePromptPath() {
+      const pathEl = document.querySelector('.terminal-input-line .prompt-path');
+      if (pathEl) {
+        pathEl.textContent = currentDir;
+      }
+    }
 
     // 1. Populate virtual files from windows with markdown summaries (e.g. page.md)
     if (siteData.windows && Array.isArray(siteData.windows)) {
@@ -211,13 +220,25 @@
       };
     }
 
-    // 4. Virtual directory for articles/posts
+    // 4. Virtual directory for articles/posts & population of articleFiles
     if (siteData.posts && siteData.posts.length > 0) {
       files['articles'] = {
         type: 'dir',
         size: '160B',
         date: 'Jan 01 2026'
       };
+
+      siteData.posts.forEach((p) => {
+        const slug = (p.url || '').split('/').filter(Boolean).pop() || 'post';
+        const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
+        const content = `# ${p.title || slug}\nDate: ${p.date || '2026-01-01'}\nURL: ${p.url || ''}\n\n${p.desc || ''}`;
+        articleFiles[fileName] = {
+          type: 'file',
+          size: '1.2K',
+          date: p.date ? p.date.slice(0, 10) : 'Jan 01 2026',
+          content: content
+        };
+      });
     }
 
     // Helper functions
@@ -331,7 +352,20 @@
     }
 
     function switchTmuxWindow(targetWindow) {
+      if (!targetWindow) return false;
       const target = normalizeWindowName(targetWindow);
+
+      // Verify that the target pane actually exists in DOM before switching
+      let targetPane = null;
+      try {
+        targetPane = document.querySelector(`.tmux-pane[data-pane="${CSS.escape(target)}"]`);
+      } catch (err) {
+        return false;
+      }
+      if (!targetPane) {
+        return false;
+      }
+
       currentTmuxWindow = target;
 
       // 1. Show only the pane matching data-pane="<target>"
@@ -372,17 +406,16 @@
         if (termBody) {
           termBody.scrollTop = 0;
         }
-        const activePane = document.querySelector(`.tmux-pane[data-pane="${target}"]`);
-        if (activePane) {
-          const paneContent = activePane.querySelector('.tmux-pane-content');
-          if (paneContent) {
-            paneContent.scrollTop = 0;
-          }
+        const paneContent = targetPane.querySelector('.tmux-pane-content');
+        if (paneContent) {
+          paneContent.scrollTop = 0;
         }
-        if (hiddenInput && document.activeElement === hiddenInput) {
-          hiddenInput.blur();
+        if (document.activeElement && termWindow.contains(document.activeElement)) {
+          document.activeElement.blur();
         }
       }
+
+      return true;
     }
 
     function getActiveScrollContainer() {
@@ -494,9 +527,12 @@ ${rows}
             const tIdx = args.indexOf('-t');
             const target = tIdx !== -1 ? args[tIdx + 1] : args[1];
             if (target) {
-              switchTmuxWindow(target);
+              if (!switchTmuxWindow(target)) {
+                return `<span class="term-error">can't find window: ${escapeHtml(target)}</span>`;
+              }
               return null;
             }
+            return `<span class="term-error">tmux: specify a window target (-t &lt;name|index&gt;)</span>`;
           }
           if (sub === 'next-window' || sub === 'next' || sub === 'n') {
             cycleTmuxWindow(1);
@@ -507,7 +543,9 @@ ${rows}
             return null;
           }
           if (args.length === 1) {
-            switchTmuxWindow(args[0]);
+            if (!switchTmuxWindow(args[0])) {
+              return `<span class="term-error">can't find window: ${escapeHtml(args[0])}</span>`;
+            }
             return null;
           }
           return `<span class="term-error">tmux: unknown action '${escapeHtml(args.join(' '))}'</span>`;
@@ -519,10 +557,13 @@ ${rows}
         run: (args) => {
           const isLong = args.includes('-l') || args.includes('-la') || args.includes('-al');
           const usr = escapeHtml(siteData.user || 'user');
+          const isArticlesArg = args.includes('articles') || args.includes('articles/') || args.includes('~/articles');
+          const currentFiles = (currentDir === '~/articles' || isArticlesArg) ? articleFiles : files;
+
           if (isLong) {
             let out = `<div class="term-table"><div class="term-tr term-muted"><div class="term-td">Permissions</div><div class="term-td">User</div><div class="term-td">Size</div><div class="term-td">Date</div><div class="term-td">Name</div></div>`;
-            Object.keys(files).forEach((name) => {
-              const f = files[name];
+            Object.keys(currentFiles).forEach((name) => {
+              const f = currentFiles[name];
               const perm = f.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
               const nameClass = f.type === 'dir' ? 'term-good' : (name.startsWith('flag') ? 'term-warn' : 'term-fg');
               out += `<div class="term-tr"><div class="term-td term-muted">${perm}</div><div class="term-td">${usr}</div><div class="term-td term-muted">${f.size}</div><div class="term-td term-muted">${f.date}</div><div class="term-td ${nameClass}">${name}${f.type === 'dir' ? '/' : ''}</div></div>`;
@@ -531,8 +572,8 @@ ${rows}
             return out;
           }
 
-          let names = Object.keys(files).map((name) => {
-            const f = files[name];
+          let names = Object.keys(currentFiles).map((name) => {
+            const f = currentFiles[name];
             return f.type === 'dir' ? `<span class="term-good">${name}/</span>` : `<span class="term-fg">${name}</span>`;
           });
           return names.join('    ');
@@ -553,18 +594,31 @@ ${rows}
         desc: 'Read a file',
         run: (args) => {
           if (!args.length) return `<span class="term-error">cat: missing file operand</span>`;
-          const target = args[0].replace(/^\.\//, '');
+          const rawTarget = args[0].replace(/^\.\//, '');
+          let target = rawTarget;
           let raw = null;
+
+          const currentFiles = currentDir === '~/articles' ? articleFiles : files;
+
           if (target === '~/.profile' || target === '.profile') {
-            raw = files['.profile'] ? files['.profile'].content : null;
-            if (!raw) return `<span class="term-error">cat: .profile not found</span>`;
-          } else if (files[target]) {
-            if (files[target].type === 'dir') return `<span class="term-error">cat: ${escapeHtml(target)}: Is a directory</span>`;
-            raw = files[target].content;
-          } else if (files[target + '.md']) {
-            raw = files[target + '.md'].content;
-          } else if (files[target + '.txt']) {
-            raw = files[target + '.txt'].content;
+            raw = (files['.profile'] && files['.profile'].content) || null;
+            if (raw === null) return `<span class="term-error">cat: .profile not found</span>`;
+          } else if (currentDir === '~' && target.startsWith('articles/')) {
+            const sub = target.replace(/^articles\//, '');
+            if (Object.hasOwn(articleFiles, sub)) {
+              raw = articleFiles[sub].content;
+            } else if (Object.hasOwn(articleFiles, sub + '.md')) {
+              raw = articleFiles[sub + '.md'].content;
+            } else {
+              return `<span class="term-error">cat: ${escapeHtml(target)}: No such file or directory</span>`;
+            }
+          } else if (Object.hasOwn(currentFiles, target)) {
+            if (currentFiles[target].type === 'dir') return `<span class="term-error">cat: ${escapeHtml(target)}: Is a directory</span>`;
+            raw = currentFiles[target].content;
+          } else if (Object.hasOwn(currentFiles, target + '.md')) {
+            raw = currentFiles[target + '.md'].content;
+          } else if (Object.hasOwn(currentFiles, target + '.txt')) {
+            raw = currentFiles[target + '.txt'].content;
           } else {
             return `<span class="term-error">cat: ${escapeHtml(target)}: No such file or directory</span>`;
           }
@@ -627,18 +681,40 @@ ${rows}
       cd: {
         desc: 'Change directory',
         run: (args) => {
-          if (!args.length || args[0] === '~' || args[0] === '/') return '';
-          if (args[0] === '..' || args[0] === '.') return '';
-          if (args[0] === 'articles' || args[0] === 'articles/') {
-            return `<span class="term-muted">Entered ~/articles.</span>`;
+          if (!args.length || args[0] === '~' || args[0] === '/') {
+            currentDir = '~';
+            updatePromptPath();
+            return '';
           }
-          return `<span class="term-error">cd: no such file or directory: ${escapeHtml(args[0])}</span>`;
+          const target = args[0].trim();
+          if (target === '.' || target === './') {
+            return '';
+          }
+          if (target === '..' || target === '../') {
+            currentDir = '~';
+            updatePromptPath();
+            return '';
+          }
+          if (target === 'articles' || target === 'articles/' || target === '~/articles' || target === '~/articles/') {
+            if (files['articles'] && files['articles'].type === 'dir') {
+              currentDir = '~/articles';
+              updatePromptPath();
+              return '';
+            }
+            return `<span class="term-error">cd: no such file or directory: ${escapeHtml(target)}</span>`;
+          }
+          return `<span class="term-error">cd: no such file or directory: ${escapeHtml(target)}</span>`;
         }
       },
 
       pwd: {
         desc: 'Print working directory',
-        run: () => `/home/${escapeHtml(siteData.user || 'user')}`
+        run: () => {
+          const usr = escapeHtml(siteData.user || 'user');
+          const base = `/home/${usr}`;
+          if (currentDir === '~' || currentDir === '') return base;
+          return `${base}/${currentDir.replace(/^~\/?/, '')}`;
+        }
       },
 
       theme: {
@@ -795,7 +871,7 @@ ${rows}
     // Dynamically register commands for every configured tmux window
     if (siteData.windows && Array.isArray(siteData.windows)) {
       siteData.windows.forEach((win) => {
-        if (win.id !== 'zsh' && !commands[win.id]) {
+        if (win.id !== 'zsh' && !Object.hasOwn(commands, win.id)) {
           commands[win.id] = {
             desc: `Switch to Window (${escapeHtml(win.name)} static view)`,
             run: (args) => {
@@ -846,7 +922,7 @@ ${welcomeTip}\n`;
       const u = escapeHtml(siteData.user || 'user');
       const h = escapeHtml(siteData.host || 'terminal');
       const pchar = escapeHtml(siteData.prompt_char || '$');
-      line.innerHTML = `<span class="terminal-prompt"><span class="prompt-user">${u}</span><span class="prompt-at">@</span><span class="prompt-host">${h}</span><span class="prompt-colon">:</span><span class="prompt-path">~</span><span class="prompt-char">${pchar}</span></span> <span class="term-bright">${escapeHtml(cmdText)}</span>`;
+      line.innerHTML = `<span class="terminal-prompt"><span class="prompt-user">${u}</span><span class="prompt-at">@</span><span class="prompt-host">${h}</span><span class="prompt-colon">:</span><span class="prompt-path">${escapeHtml(currentDir || '~')}</span><span class="prompt-char">${pchar}</span></span> <span class="term-bright">${escapeHtml(cmdText)}</span>`;
       termOutput.appendChild(line);
     }
 
@@ -886,7 +962,9 @@ ${welcomeTip}\n`;
             const tIdx = args.indexOf('-t');
             const target = tIdx !== -1 ? args[tIdx + 1] : args[1];
             if (target) {
-              switchTmuxWindow(target);
+              if (!switchTmuxWindow(target)) {
+                appendOutput(`<span class="term-error">can't find window: ${escapeHtml(target)}</span>`);
+              }
               return;
             }
           } else if (sub === 'next-window' || sub === 'next' || sub === 'n') {
@@ -895,8 +973,10 @@ ${welcomeTip}\n`;
           } else if (sub === 'previous-window' || sub === 'prev-window' || sub === 'prev' || sub === 'p') {
             cycleTmuxWindow(-1);
             return;
-          } else if (args.length === 1 && (TMUX_WINDOWS.includes(args[0]) || !isNaN(parseInt(args[0], 10)))) {
-            switchTmuxWindow(args[0]);
+          } else if (args.length === 1) {
+            if (!switchTmuxWindow(args[0])) {
+              appendOutput(`<span class="term-error">can't find window: ${escapeHtml(args[0])}</span>`);
+            }
             return;
           }
         }
@@ -905,12 +985,14 @@ ${welcomeTip}\n`;
           const tIdx = args.indexOf('-t');
           const target = tIdx !== -1 ? args[tIdx + 1] : args[0];
           if (target) {
-            switchTmuxWindow(target);
+            if (!switchTmuxWindow(target)) {
+              appendOutput(`<span class="term-error">can't find window: ${escapeHtml(target)}</span>`);
+            }
             return;
           }
         }
 
-        if (commands[cmdName]) {
+        if (Object.hasOwn(commands, cmdName) && typeof commands[cmdName]?.run === 'function') {
           try {
             const res = commands[cmdName].run(args);
             if (res !== null && res !== undefined && res !== '') appendOutput(res);
@@ -978,7 +1060,7 @@ ${welcomeTip}\n`;
 
         // Autocomplete file names for 'cat', 'open', etc.
         const prefix = parts[parts.length - 1].toLowerCase();
-        const fileList = Object.keys(files);
+        const fileList = Object.keys(currentDir === '~/articles' ? articleFiles : files);
         const matches = fileList.filter(f => f.startsWith(prefix));
 
         if (matches.length === 1) {
@@ -1086,8 +1168,12 @@ ${welcomeTip}\n`;
         return;
       }
 
-      // Ctrl + C (cancel line)
+      // Ctrl + C (cancel line or allow native copy if text is selected)
       if (e.ctrlKey && e.key === 'c') {
+        const sel = window.getSelection();
+        if (sel && sel.toString().length > 0) {
+          return;
+        }
         e.preventDefault();
         appendCommandLine(hiddenInput.value + '^C');
         hiddenInput.value = '';
@@ -1343,11 +1429,15 @@ ${welcomeTip}\n`;
       const initialCmd = urlParams.get('cmd');
 
       if (initialWin) {
-        switchTmuxWindow(initialWin);
+        if (!switchTmuxWindow(initialWin)) {
+          switchTmuxWindow('zsh');
+        }
       } else if (initialCmd) {
         const lowerCmd = initialCmd.trim().toLowerCase();
         if (TMUX_WINDOWS.includes(lowerCmd) || ['mail', 'email', 'smtp'].includes(lowerCmd)) {
-          switchTmuxWindow(lowerCmd);
+          if (!switchTmuxWindow(lowerCmd)) {
+            switchTmuxWindow('zsh');
+          }
         } else {
           switchTmuxWindow('zsh');
           executeCommand(initialCmd);
@@ -1355,7 +1445,9 @@ ${welcomeTip}\n`;
       } else {
         switchTmuxWindow('zsh');
       }
-    } catch (e) {}
+    } catch (e) {
+      switchTmuxWindow('zsh');
+    }
 
     // Auto-focus input on page load (only on desktop devices)
     setTimeout(() => {
