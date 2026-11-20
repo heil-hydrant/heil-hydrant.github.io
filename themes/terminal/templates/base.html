@@ -90,9 +90,16 @@
                         <span class="text-accent font-bold tracking-wide">{{ config.theme | default(value="terminal") }}</span>
                         <span class="text-accent font-bold">::</span>
                         <span class="text-fg-2">live terminal interactive</span>
-                        {% if config.generate_feeds %}
-                        <span class="text-accent">::</span>
-                        <a href="{{ get_url(path='atom.xml') }}" class="text-accent hover:underline">Atom</a>
+                        {% if config.generate_feeds and config.feed_filenames %}
+                            {% for feed in config.feed_filenames %}
+                                <span class="text-accent">::</span>
+                                <a href="{{ get_url(path=feed, trailing_slash=false) }}" class="text-accent hover:underline">
+                                    {%- if feed is containing(pat="atom") -%}Atom
+                                    {%- elif feed is containing(pat="rss") -%}RSS
+                                    {%- else -%}{{ feed }}
+                                    {%- endif -%}
+                                </a>
+                            {% endfor %}
                         {% endif %}
                     </div>
                 </div>

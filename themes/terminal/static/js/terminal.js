@@ -5,6 +5,53 @@
 (function () {
   'use strict';
 
+  function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(() => {
+        fallbackCopyText(text);
+      });
+    } else {
+      fallbackCopyText(text);
+      return Promise.resolve();
+    }
+  }
+
+  function fallbackCopyText(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-9999px';
+    textArea.style.top = '0';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {}
+    document.body.removeChild(textArea);
+  }
+
+  function setupGlobalCopyButtons() {
+    document.addEventListener('click', (e) => {
+      const copyBtn = e.target.closest('[data-copy]');
+      if (!copyBtn) return;
+      e.preventDefault();
+      const textToCopy = copyBtn.getAttribute('data-copy');
+      if (textToCopy) {
+        copyToClipboard(textToCopy);
+        const origHtml = copyBtn.innerHTML;
+        copyBtn.innerHTML = '✓ Copied!';
+        copyBtn.style.borderColor = 'var(--good)';
+        copyBtn.style.color = 'var(--good)';
+        setTimeout(() => {
+          copyBtn.innerHTML = origHtml;
+          copyBtn.style.borderColor = '';
+          copyBtn.style.color = '';
+        }, 2000);
+      }
+    });
+  }
+
   function initTerminal() {
     const termWindow = document.getElementById('terminal-window');
     const termBody = document.getElementById('terminal-body');
@@ -247,32 +294,6 @@
       return str.replace(/[&<>'"]/g, 
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
       );
-    }
-
-    function copyToClipboard(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        return navigator.clipboard.writeText(text).catch(() => {
-          fallbackCopyText(text);
-        });
-      } else {
-        fallbackCopyText(text);
-        return Promise.resolve();
-      }
-    }
-
-    function fallbackCopyText(text) {
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-9999px';
-      textArea.style.top = '0';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      try {
-        document.execCommand('copy');
-      } catch (err) {}
-      document.body.removeChild(textArea);
     }
 
     function renderContact(args) {
@@ -653,9 +674,14 @@ ${rows}
           // Check configured windows
           if (siteData.windows) {
             const win = siteData.windows.find(w => w.id === target || (w.name && w.name.toLowerCase() === target));
-            if (win && win.url) {
-              window.location.href = win.url;
-              return `Navigating to ${escapeHtml(win.url)}...`;
+            if (win) {
+              if (win.url) {
+                window.location.href = win.url;
+                return `Navigating to ${escapeHtml(win.url)}...`;
+              } else if (win.id) {
+                switchTmuxWindow(win.id);
+                return null;
+              }
             }
           }
           // Check posts/pages
@@ -681,7 +707,8 @@ ${rows}
       cd: {
         desc: 'Change directory',
         run: (args) => {
-          if (!args.length || args[0] === '~' || args[0] === '/') {
+          const usr = siteData.user || 'user';
+          if (!args.length || args[0] === '~' || args[0] === '~/' || args[0] === '/' || args[0] === `/home/${usr}` || args[0] === `/home/${usr}/`) {
             currentDir = '~';
             updatePromptPath();
             return '';
@@ -696,6 +723,9 @@ ${rows}
             return '';
           }
           if (target === 'articles' || target === 'articles/' || target === '~/articles' || target === '~/articles/') {
+            if (currentDir === '~/articles' && (target === 'articles' || target === 'articles/')) {
+              return `<span class="term-error">cd: no such file or directory: ${escapeHtml(target)}</span>`;
+            }
             if (files['articles'] && files['articles'].type === 'dir') {
               currentDir = '~/articles';
               updatePromptPath();
@@ -989,6 +1019,9 @@ ${welcomeTip}\n`;
               appendOutput(`<span class="term-error">can't find window: ${escapeHtml(target)}</span>`);
             }
             return;
+          } else {
+            appendOutput(`<span class="term-error">select-window: specify a window target (-t &lt;name|index&gt;)</span>`);
+            return;
           }
         }
 
@@ -1162,14 +1195,14 @@ ${welcomeTip}\n`;
       }
 
       // Ctrl + L (clear)
-      if (e.ctrlKey && e.key === 'l') {
+      if (e.ctrlKey && e.key.toLowerCase() === 'l') {
         e.preventDefault();
         commands.clear.run();
         return;
       }
 
       // Ctrl + C (cancel line or allow native copy if text is selected)
-      if (e.ctrlKey && e.key === 'c') {
+      if (e.ctrlKey && e.key.toLowerCase() === 'c') {
         const sel = window.getSelection();
         if (sel && sel.toString().length > 0) {
           return;
@@ -1182,7 +1215,7 @@ ${welcomeTip}\n`;
       }
 
       // Ctrl + U (clear input)
-      if (e.ctrlKey && e.key === 'u') {
+      if (e.ctrlKey && e.key.toLowerCase() === 'u') {
         e.preventDefault();
         hiddenInput.value = '';
         displaySpan.textContent = '';
@@ -1459,6 +1492,7 @@ ${welcomeTip}\n`;
   }
 
   // Initialize once DOM is ready
+  setupGlobalCopyButtons();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTerminal);
   } else {

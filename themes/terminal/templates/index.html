@@ -181,7 +181,7 @@
                                 {% endif %}
                             </div>
                             <div class="tmux-pane-footer text-xs font-mono text-muted flex items-center justify-between pt-2 mt-auto border-t border-line-subtle select-none">
-                                <span>{{ win.footer_left | default(value="[<span class=\"text-accent font-semibold\">Window " ~ loop.index ~ ":</span> <span class=\"text-fg\">" ~ win.name ~ "</span>] [<span class=\"text-accent font-semibold\">RO</span>]") | safe }}</span>
+                                <span>{{ win.footer_left | default(value="[<span class=\"text-accent font-semibold\">Window " ~ loop.index ~ ":</span> <span class=\"text-fg\">" ~ (win.name | default(value=win.id)) ~ "</span>] [<span class=\"text-accent font-semibold\">RO</span>]") | safe }}</span>
                                 <span>{{ win.footer_right | default(value="mode: <span class=\"text-accent font-semibold\">static-view</span>") | safe }}</span>
                             </div>
                         </div>
